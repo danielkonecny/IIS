@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'rozhodci.apps.RozhodciConfig',
+	'sports.apps.SportsConfig',
 	'tournaments.apps.TournamentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',

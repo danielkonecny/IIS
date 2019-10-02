@@ -7,9 +7,6 @@ def single(request,id):
     return render(request, 'tournaments/single.html', {'tournament': tournament})
 
 def index(request):
-	front = Tournament.objects.all()[:5]
+	front = Tournament.objects.all()
 	
-	context = {
-		'front': front,
-	}
-	return render(request, 'tournaments/index.html', context)
+	return render(request, 'tournaments/index.html', {'front':front})

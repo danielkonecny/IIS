@@ -1,0 +1,13 @@
+{% if front %}
+    <ul>
+    {% for s in front %}
+        <li>
+            <a href = "{% url 'sports:single' s.id %}">
+            {{s.name}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nothing to show.</p>
+{% endif %}
