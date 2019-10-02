@@ -1,16 +1,15 @@
-from django.shortcuts import render
-
-# Create your views here.
-
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
 from .models import Tournament
 
 
-def single(request,name):
-    return HttpResponse("Tournament detail, name: %s" % name)
-
+def single(request,id):
+    tournament = get_object_or_404(Tournament,pk=id)
+    return render(request, 'tournaments/single.html', {'tournament': tournament})
 
 def index(request):
 	front = Tournament.objects.all()[:5]
-	output = ', '.join([t.name for t in front])
-	return HttpResponse(output)
+	
+	context = {
+		'front': front,
+	}
+	return render(request, 'tournaments/index.html', context)
