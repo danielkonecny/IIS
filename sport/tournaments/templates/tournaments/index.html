@@ -1,13 +1,22 @@
-{% if front %}
-    <ul>
-    {% for t in front %}
-        <li>
-            <a href = "{% url 'tournaments:single' t.id %}">
-            {{t.name}}
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Nothing to show.</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}
+	Tournament
+{% endblock %}
+
+{% block content %}
+	{% if front %}
+    	<ul>
+    	{% for t in front %}
+        	<li>
+            	<a href = "{% url 'tournaments:single' t.id %}">
+            	{{t.name}}
+            	</a>
+        	</li>
+    	{% endfor %}
+    	</ul>
+	{% else %}
+    	<p>Nothing to show.</p>
+	{% endif %}
+{% endblock %}
+
