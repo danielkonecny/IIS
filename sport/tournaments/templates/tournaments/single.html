@@ -1,5 +1,56 @@
-<div>
-    <h2>{{tournament.name}}</h2>
-    <p>Count of players: {{tournament.player_count}}</p>
-    <p>Entry: {{tournament.entry}} CZK</p>
-</div>
+{% extends "base.html" %}
+
+{% block title %}
+	Tournament - {{tournament.name}}
+{% endblock %}
+
+{% block header %}
+	Tournaments > {{tournament.name}}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class = "title">{{tournament.name}}</h2>
+
+		<table class = "detail">
+		
+		<tr>
+		<td>sport</td>
+		<td>{{tournament.sport}}</td>
+		</tr>
+		<tr>
+		<td>entry</td>
+		<td>{{tournament.entry}}</td>
+		</tr>
+		<tr>
+		<td>players</td>
+		<td>{{tournament.player_count}}</td>
+		</tr>
+		<tr>
+		<td>started</td>
+		<td>{{tournament.started}}</td>
+		</tr>
+		<tr>
+		<td>singleplayer</td>
+		<td>{{tournament.singleplayer}}</td>
+		</tr>	
+				
+		</table>
+
+		<h2 class="title">Teams ({{teams|length}})</h2>
+
+		{% if teams %}
+		<table class = "detail">
+    	{% for t in teams %}
+			<tr>
+			<td><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></td>
+			<td><img src="{{t.flag.url}}" width = "100" /></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    		<p>No teams registered.</p>
+		{% endif %}		
+
+{% endblock %}
+

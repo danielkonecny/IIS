@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Player - {{user.last_name}}, {{user.first_name}}
+{% endblock %}
+
+{% block header %}
+	Player > {{user.last_name}}, {{user.first_name}}
+{% endblock %}
+
+{% block content %}
+
+    <h2 class = "title">Hosting in teams ({{teams|length}})</h2>
+    
+		{% if teams %}
+		<table class = "detail">
+    	{% for t in teams %}
+			<tr>
+			<td><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></td>
+			<td><img src="{{t.flag.url}}" width = "100" /></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    		<p>No teams.</p>
+		{% endif %}	
+
+{% endblock %}
+

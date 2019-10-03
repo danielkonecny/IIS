@@ -19,12 +19,18 @@ list-style-type: none;
 }
 
 p, ul li {
-margin-bottom: 15px; 
+margin-bottom: 25px; 
 }
 
 ul li {
 list-stype-type: none;
 margin-bottom: 10px;
+}
+
+li.item {
+margin-bottom: 25px;
+background: #fcfcfc;
+padding: 25px;
 }
 
 a:hover {
@@ -37,6 +43,10 @@ font-size: 30px;
 
 h2 {
 font-size: 20px;
+}
+
+.title {
+margin-bottom: 25px;
 }
 
 .block {
@@ -61,4 +71,22 @@ width: 80%;
 #sidebar {
 float: left;
 width: 20%;
+}
+
+table {
+width: 100%;
+border-spacing: 0;
+border-collapse: collapse;
+}
+
+table.detail {
+margin-bottom: 25px;
+}
+
+table.detail td {
+padding: 20px;
+}
+
+table.detail tr:nth-child(odd) {
+background: #fcfcfc;
 }

@@ -1,4 +1,46 @@
-<div>
-    <h2>{{team.name}}</h2>
-    <img src = {{team.flag}} />
-</div>
+{% extends "base.html" %}
+
+{% block title %}
+	Team - {{team.name}}
+{% endblock %}
+
+{% block header %}
+	Teams > {{team.name}}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class = "title">Team logo</h2>
+	
+        <p><img src = "{{team.flag.url}}" width = "100" /></p>
+
+    <h2 class = "title">Players ({{players|length}})</h2>
+    
+		{% if players %}
+		<table class = "detail">
+    	{% for p in players %}
+			<tr>
+			<td><a href="{% url 'users:single' p.id %}">{{p.last_name}}, {{p.first_name}}</a></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    	<p>No players in this team.</p>
+		{% endif %}	
+        
+    <h2 class = "title">Participating in</h2>
+    
+		{% if tournaments %}
+		<table class = "detail">
+    	{% for t in tournaments %}
+			<tr>
+			<td><a href="{% url 'tournaments:single' t.id %}">{{t.name}}</a></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    	<p>No tournaments.</p>
+		{% endif %}	
+
+{% endblock %}
+

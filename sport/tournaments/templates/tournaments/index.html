@@ -1,22 +1,40 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Tournament
+	Tournaments
+{% endblock %}
+
+{% block header %}
+	List of tournaments
 {% endblock %}
 
 {% block content %}
+
 	{% if front %}
     	<ul>
     	{% for t in front %}
-        	<li>
-            	<a href = "{% url 'tournaments:single' t.id %}">
-            	{{t.name}}
-            	</a>
+        	<li class="item">
+                <p>
+            		<a href = "{% url 'tournaments:single' t.id %}">
+            		<h2>
+            		{{t.name}}
+            		</h2>
+            		</a>
+            	</p>
+            	<p>
+            		sport: <i>{{t.sport}}</i>
+            	</p>
+            	<p>
+            		entry: <i>{{t.entry}} CZK</i>
+            	</p>
+            	<p>
+            		players: <i>{{t.player_count}}</i>
+            	</p>
         	</li>
     	{% endfor %}
     	</ul>
 	{% else %}
-    	<p>Nothing to show.</p>
+    	<p>No tournaments to show.</p>
 	{% endif %}
 {% endblock %}
 
