@@ -13,4 +13,4 @@ admin.site.register(Managers, ManagersAdmin)
 
 class PlayersAdmin(admin.ModelAdmin):
 	list_display = ('team','user')
-admin.site.register(Players, PlayersAdmin)
+#admin.site.register(Players, PlayersAdmin)

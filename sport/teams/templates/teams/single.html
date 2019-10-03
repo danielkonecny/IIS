@@ -12,7 +12,27 @@
 
 	<h2 class = "title">Team logo</h2>
 	
-        <p><img src = "{{team.flag.url}}" width = "100" /></p>
+        <p>
+        {% if team.flag %}
+        <img src = "{{team.flag.url}}" width = "100" />
+        {% else %}
+        No logo uploaded.
+        {% endif %}
+        </p>
+
+    <h2 class = "title">Managers ({{managers|length}})</h2>
+    
+		{% if managers %}
+		<table class = "detail">
+    	{% for m in managers %}
+			<tr>
+			<td><a href="{% url 'users:single' m.id %}">{{m.last_name}}, {{m.first_name}}</a></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    	<p>No managers in this team yet.</p>
+		{% endif %}	
 
     <h2 class = "title">Players ({{players|length}})</h2>
     
@@ -28,7 +48,7 @@
     	<p>No players in this team.</p>
 		{% endif %}	
         
-    <h2 class = "title">Participating in</h2>
+    <h2 class = "title">Participating in tournaments ({{tournaments|length}})</h2>
     
 		{% if tournaments %}
 		<table class = "detail">

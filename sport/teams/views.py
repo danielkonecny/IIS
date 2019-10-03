@@ -18,6 +18,6 @@ def single(request,id):
     return render(request, 'teams/single.html', {'team': team, 'tournaments':tournaments, 'players':players, 'managers':managers})
 
 def index(request):
-	front = Team.objects.all()[:5]
+	front = Team.objects.all()
 
 	return render(request, 'teams/index.html', {'front':front})

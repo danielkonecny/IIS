@@ -1,8 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-# Create your models here.
-
 class Team(models.Model):
 
     def __str__(self):
@@ -36,8 +34,8 @@ class Players(models.Model):
     def str__str__(self):
         return self.user.username
     
-    team = models.ForeignKey(Team,on_delete=models.CASCADE)
+    team = models.ManyToManyField(Team)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)    
-    class Meta:
-        unique_together = ["team","user"]
+    #class Meta:
+    #    unique_together = ["team","user"]
     

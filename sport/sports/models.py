@@ -7,5 +7,5 @@ class Sport(models.Model):
 	def __str__(self):
 		return self.name
 		
-	name = models.CharField(max_length=50,default='Sport')
+	name = models.CharField(max_length=50,default='Sport', unique=True)
     

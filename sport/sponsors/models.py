@@ -8,5 +8,5 @@ class Sponsor(models.Model):
 		return self.name
 		
 	logo = models.ImageField(upload_to='logos')
-	name = models.CharField(max_length=50,default='Sponsor')
+	name = models.CharField(max_length=50,default='Sponsor',unique=True)
     
