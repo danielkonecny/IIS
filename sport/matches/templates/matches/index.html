@@ -1,0 +1,13 @@
+{% if front %}
+    <ul>
+    {% for m in front %}
+        <li>
+            <a href = "{% url 'matches:single' m.id %}">
+            {{m.id}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nothing to show.</p>
+{% endif %}

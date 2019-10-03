@@ -1,5 +1,7 @@
 from django.db import models
+from django.conf import settings
 
+# jeden turnaj
 class Tournament(models.Model):
 
 	def __str__(self):
@@ -12,3 +14,38 @@ class Tournament(models.Model):
 	sport = models.ForeignKey('sports.Sport',on_delete=models.CASCADE) # id sportu turnaje
 	singleplayer = models.BooleanField(default=False) # pouze pro solo uzivatele, ne pro tymy
     
+# teamy co jsou soucasti jednoho turnaje
+class Tournament_teams(models.Model):
+
+	turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+	team = models.ForeignKey('teams.Team',on_delete=models.CASCADE)
+
+# sponzori jednoho turnaje	
+class Tournament_sponsors(models.Model):
+
+	turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+	sponsor = models.ForeignKey('sponsors.Sponsor',on_delete=models.CASCADE)
+
+# rozhodci jednoho turnaje
+class Rozhodci(models.Model):
+
+	turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+	
+# requesty teamu o hru v turnaji
+class Request_tournamentjoin(models.Model):
+
+	turnaj = models.ForeignKey('tournaments.Tournament',on_delete=models.CASCADE)
+	team = models.ForeignKey('teams.Team',on_delete=models.CASCADE)
+
+# request uzivatele o roli rozhodciho turnaje
+class Request_rozhodci(models.Model):
+
+	turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+
+# poradatele turnaju
+class Poradatele(models.Model):
+
+	turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
