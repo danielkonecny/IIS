@@ -13,52 +13,10 @@ class Tournament(models.Model):
     name = models.CharField(max_length=50,default='Tournament') # nazev turnaje
     sport = models.ForeignKey('sports.Sport',on_delete=models.CASCADE) # id sportu turnaje
     singleplayer = models.BooleanField(default=False) # pouze pro solo uzivatele, ne pro tymy
-    
-# teamy co jsou soucasti jednoho turnaje
-class Tournament_teams(models.Model):
 
-    turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
-    team = models.ForeignKey('teams.Team',on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["team","turnaj"]
-
-
-# sponzori jednoho turnaje    
-class Tournament_sponsors(models.Model):
-
-    turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
-    sponsor = models.ForeignKey('sponsors.Sponsor',on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["sponsor","turnaj"]
-
-# rozhodci jednoho turnaje
-class Rozhodci(models.Model):
-
-    turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["user","turnaj"]
-    
-# requesty teamu o hru v turnaji
-class Request_tournamentjoin(models.Model):
-
-    turnaj = models.ForeignKey('tournaments.Tournament',on_delete=models.CASCADE)
-    team = models.ForeignKey('teams.Team',on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["team","turnaj"]
-
-# request uzivatele o roli rozhodciho turnaje
-class Request_rozhodci(models.Model):
-
-    turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["user","turnaj"]
-
-# poradatele turnaju
-class Poradatele(models.Model):
-
-    turnaj = models.ForeignKey(Tournament,on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    class Meta:
-        unique_together = ["user","turnaj"]
+    sponsors = models.ManyToManyField('sponsors.Sponsor', related_name='tour_sponsors',blank=True)   
+    teams = models.ManyToManyField('teams.Team', related_name='tour_teams',blank=True)
+    requests_teams = models.ManyToManyField('teams.Team', related_name='tour_requests_teams',blank=True)
+    rozhodci = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tour_rozhodci',blank=True)
+    requests_rozhodci = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tour_requests_rozhodci',blank=True)
+    poradatele = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tour_poradatele', on_delete='CASCADE')

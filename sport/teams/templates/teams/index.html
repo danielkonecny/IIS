@@ -1,13 +1,34 @@
-{% if front %}
-    <ul>
-    {% for s in front %}
-        <li>
-            <a href = "{% url 'teams:single' s.id %}">
-            {{s.name}}
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Nothing to show.</p>
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}
+	Teams
+{% endblock %}
+
+{% block header %}
+	List of teams
+{% endblock %}
+
+{% block content %}
+
+	{% if front %}
+    	<ul>
+    	{% for t in front %}
+        	<li class="item">
+                <p>
+            		<a href = "{% url 'teams:single' t.id %}">
+            		<h2>
+            		{{t.name}}
+            		</h2>
+            		</a>
+            	</p>
+            	<p>
+            		<img src='{{t.flag.url}}' width='100' />
+            	</p>
+        	</li>
+    	{% endfor %}
+    	</ul>
+	{% else %}
+    	<p>No tournaments to show.</p>
+	{% endif %}
+{% endblock %}
+

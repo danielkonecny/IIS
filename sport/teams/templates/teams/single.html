@@ -20,19 +20,13 @@
         {% endif %}
         </p>
 
-    <h2 class = "title">Managers ({{managers|length}})</h2>
+    <h2 class = "title">Manager</h2>
     
-		{% if managers %}
 		<table class = "detail">
-    	{% for m in managers %}
 			<tr>
-			<td><a href="{% url 'users:single' m.id %}">{{m.last_name}}, {{m.first_name}}</a></td>
+			<td><a href="{% url 'users:single' manager.id %}">{{manager.last_name}}, {{manager.first_name}}</a></td>
 			</tr>
-		{% endfor %}	
 		</table>
-		{% else %}
-    	<p>No managers in this team yet.</p>
-		{% endif %}	
 
     <h2 class = "title">Players ({{players|length}})</h2>
     
