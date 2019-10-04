@@ -37,6 +37,20 @@
 				
 		</table>
 
+		<h2 class="title">Rozhodci ({{rozhodci|length}})</h2>
+
+		{% if rozhodci %}
+		<table class = "detail">
+    	{% for r in rozhodci %}
+			<tr>
+			<td><a href="{% url 'users:single' r.id %}">{{r.last_name}}, {{r.first_name}}</a></td>
+			</tr>
+		{% endfor %}	
+		</table>
+		{% else %}
+    		<p>No rozhodci registered.</p>
+		{% endif %}	
+
 		<h2 class="title">Teams ({{teams|length}})</h2>
 
 		{% if teams %}

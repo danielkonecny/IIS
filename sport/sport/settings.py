@@ -26,10 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
 INSTALLED_APPS = [
+	'forms.apps.FormsConfig',
 	'users.apps.UsersConfig',
 	'matches.apps.MatchesConfig',
 	'sponsors.apps.SponsorsConfig',
@@ -92,6 +90,7 @@ DATABASES = {
     }
 }
 
+#AUTH_USER_MODEL = "users.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -136,3 +135,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Team
-from tournaments.models import Tournament
 
 def single(request,id):
     team = get_object_or_404(Team,pk=id)

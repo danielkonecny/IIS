@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-	List of players
+	List of managers
 {% endblock %}
 
 {% block header %}
-	List of players
+	List of managers
 {% endblock %}
 
 {% block content %}
@@ -22,9 +22,9 @@
             		</a>
             	</p>
             	<p>
-            		{% if p.team_teams %}
-            		plays in 
-            		{% for t in p.team_teams.all %}
+            		{% if p.team_managers %}
+            		manages 
+            		{% for t in p.team_managers.all %}
             		<i>{{t.name}}</i>&nbsp;&nbsp;&nbsp;
             		{% endfor %}
             		{% endif %}
@@ -34,7 +34,7 @@
     	{% endfor %}
     	</ul>
 	{% else %}
-    	<p>No players to show.</p>
+    	<p>No managers to show.</p>
 	{% endif %}
 {% endblock %}
 

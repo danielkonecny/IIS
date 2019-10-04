@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css" />
-    <title>{% block title %}sportBET{% endblock %}</title>
+    <title>{% block title %}sportBET 1.0{% endblock %}</title>
 </head>
 
 <body>
@@ -26,8 +26,23 @@
         	{% block sidebar %}
         	<ul>
         		<li><a href="/">Homepage</a></li>
-            	<li><a href="/tournaments">Tournaments</a></li>
-            	<li><a href="/admin/">Admin</a></li>
+        		
+        		<li class="green">Users</li>
+        		<ul class="lpad">
+        			<li><a href="/users/players">Players</a>
+        			<li><a href="/users/managers">Managers</a>
+        			<li><a href="/users/rozhodci">Rozhodci</a>
+        		</ul>
+				<li><a href="/tournaments">Tournaments</a></li>
+
+        		<li class="green">Users</li>
+        		<ul class="lpad">
+            		<li><a href="/admin/">Admin</a></li>
+            		<li><a href="/logout">Logout</a></li>
+            		<li><a href="/profile/signup/">Register</a></li>
+        		</ul>
+
+            	
         	</ul>
         	{% endblock %}
        	</div>
@@ -35,6 +50,15 @@
 
     	<div id="content">
     		<div class="block">
+    		
+  				{% if messages %}
+					<ul class="messages">
+    					{% for message in messages %}
+    					<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    					{% endfor %}
+					</ul>
+				{% endif %}
+    		
         	{% block content %}{% endblock %}
     		</div>
     </div>

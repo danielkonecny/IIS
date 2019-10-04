@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-	List of players
+	List of rozhodci
 {% endblock %}
 
 {% block header %}
-	List of players
+	List of rozhodci
 {% endblock %}
 
 {% block content %}
@@ -22,9 +22,9 @@
             		</a>
             	</p>
             	<p>
-            		{% if p.team_teams %}
-            		plays in 
-            		{% for t in p.team_teams.all %}
+            		{% if p.tour_rozhodci %}
+            		rozhodcuje 
+            		{% for t in p.tour_rozhodci.all %}
             		<i>{{t.name}}</i>&nbsp;&nbsp;&nbsp;
             		{% endfor %}
             		{% endif %}
@@ -34,7 +34,7 @@
     	{% endfor %}
     	</ul>
 	{% else %}
-    	<p>No players to show.</p>
+    	<p>No rozhodci to show.</p>
 	{% endif %}
 {% endblock %}
 
