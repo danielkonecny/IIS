@@ -40,6 +40,42 @@
 				
 		</table>
 
+		{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}
+		<p>
+        	<form action="{% url 'forms:delete_tournament' tournament.id %}" method="POST">
+            	{% csrf_token %}
+            	<input class="square red" type="submit" value="Delete tournament">
+        	</form>
+        </p>
+        {% endif %}
+        
+		{% if sponsors %}
+		<h2 class="title">Brought to you by:</h2>
+		<table class = "detail">
+    	{% for s in sponsors %}
+			<tr>
+			<td><a href="{% url 'sponsors:single' s.id %}">{{s.name}}</a></td>
+			
+			{% if s.logo %}
+			<td>
+			<img src ="{{s.logo.url}}" width ="100" />
+			</td>
+			{% endif %}
+			
+			{% if user.is_authenticated and user == tournament.poradatele %}
+			<td>
+        		<form action="{% url 'forms:remove_sponsor' tournament.id s.id %}" method="POST">
+            		{% csrf_token %}
+            		<input class="square" type="submit" value="Remove sponsor">
+        		</form>
+			</td>
+			{% endif %}
+			
+			</tr>
+		{% endfor %}	
+		</table>
+		{% endif %}	
+
 		<h2 class="title">Rozhodci ({{rozhodci|length}})</h2>
 		{% if user.is_authenticated and permitted == True and user not in rozhodci %}
     		<p>
@@ -55,6 +91,14 @@
     	{% for r in rozhodci %}
 			<tr>
 			<td><a href="{% url 'users:single' r.id %}">{{r.last_name}}, {{r.first_name}}</a></td>
+			{% if user.is_authenticated and user == tournament.poradatele %}
+			<td>
+        		<form action="{% url 'forms:remove_rozhodci' tournament.id r.id %}" method="POST">
+            		{% csrf_token %}
+            		<input class="square" type="submit" value="Remove rozhodci">
+        		</form>
+			</td>
+			{% endif %}	
 			</tr>
 		{% endfor %}	
 		</table>
@@ -73,6 +117,16 @@
 				<td>
 				<img src="{{t.flag.url}}" width = "100" />
 				</td>
+			{% endif %}
+			{% if user.is_authenticated and not tournament.started %}
+				{% if user == tournament.poradatele or user == t.managers %}
+				<td>
+        			<form action="{% url 'forms:remove_team' tournament.id t.id %}" method="POST">
+            			{% csrf_token %}
+            			<input class="square" type="submit" value="Remove team">
+        			</form>
+				</td>
+				{% endif %}
 			{% endif %}
 			</tr>
 		{% endfor %}	

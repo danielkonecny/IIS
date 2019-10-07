@@ -10,6 +10,7 @@ def single(request,id):
     
     teams = tournament.teams.all()
     rozhodci = tournament.rozhodci.all()
+    sponsors = tournament.sponsors.all()
 
     # vyber vsechny tymy, ve kterych je aktualni user
     his_teams = Team.objects.filter(players__in=[request.user.id])
@@ -17,7 +18,7 @@ def single(request,id):
     # zjisti jestli muze byt rozhodcim
     permitted = not compare(his_teams, teams) 
 
-    return render(request, 'tournaments/single.html', {'tournament': tournament, 'teams':teams,'rozhodci':rozhodci,'permitted':permitted})
+    return render(request, 'tournaments/single.html', {'tournament': tournament, 'teams':teams,'sponsors': sponsors,'rozhodci':rozhodci,'permitted':permitted})
 
 def index(request):
     front = Tournament.objects.all()

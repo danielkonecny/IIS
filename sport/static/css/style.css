@@ -152,3 +152,7 @@ display: block;
 .square:hover {
 backgroubd: #1aa602;
 }
+
+.red {
+background: #d53e00;
+}

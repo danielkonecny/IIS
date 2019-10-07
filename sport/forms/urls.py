@@ -21,5 +21,14 @@ urlpatterns = [
     
     path(r'^request_add_player(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_player, name='request_add_player'),  
     path(r'^request_add_team(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_team, name='request_add_team'),  
+    
+    path(r'^remove_player(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_player, name='remove_player'),
+    path(r'^remove_sponsor(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_sponsor, name='remove_sponsor'),
+    path(r'^remove_rozhodci(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_rozhodci, name='remove_rozhodci'),
+    path(r'^remove_team(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_team, name='remove_team'),
+
+    path(r'^delete_tournament(?P<id>\w+)/$', views.delete_tournament, name='delete_tournament'),
+    path(r'^delete_team(?P<id>\w+)/$', views.delete_team, name='delete_team'),
+    
 ]
 

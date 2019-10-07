@@ -12,13 +12,22 @@
 
 	<h2 class = "title">Team logo</h2>
 	
-        <p>
-        {% if team.flag %}
-        <img src = "{{team.flag.url}}" width = "100" />
-        {% else %}
-        No logo uploaded.
-        {% endif %}
-        </p>
+    <p>
+    {% if team.flag %}
+    <img src = "{{team.flag.url}}" width = "100" />
+    {% else %}
+    No logo uploaded.
+    {% endif %}
+    </p>
+
+	{% if user.is_authenticated and user == team.managers and permitted == True %}
+	<p>
+        <form action="{% url 'forms:delete_tournament' tournament.id %}" method="POST">
+            {% csrf_token %}
+            <input class="square red" type="submit" value="Delete tournament">
+        </form>
+    </p>
+    {% endif %}
 
     <h2 class = "title">Manager</h2>
     
@@ -30,7 +39,7 @@
 
     <h2 class = "title">Players ({{players|length}})</h2>
     
-    {% if user.is_authenticated and user not in team.managers.all and user not in team.players %}
+    {% if user.is_authenticated and user != manager and user not in team.players %}
     	<p>
         <form action="{% url 'forms:request_add_player' team.id user.id %}" method="POST">
             {% csrf_token %}
@@ -39,17 +48,27 @@
     	</p>
     {% endif %}
     
-		{% if players %}
-		<table class = "detail">
-    	{% for p in players %}
-			<tr>
-			<td><a href="{% url 'users:single' p.id %}">{{p.last_name}}, {{p.first_name}}</a></td>
-			</tr>
-		{% endfor %}	
-		</table>
-		{% else %}
-    	<p>No players in this team.</p>
-		{% endif %}	
+	{% if players %}
+	<table class = "detail">
+    {% for p in players %}
+		<tr>
+		<td><a href="{% url 'users:single' p.id %}">{{p.last_name}}, {{p.first_name}}</a></td>
+		
+		{% if user.is_authenticated and user == manager %}
+		<td>
+        	<form action="{% url 'forms:remove_player' team.id p.id %}" method="POST">
+            	{% csrf_token %}
+            	<input class="square" type="submit" value="Kick him">
+        	</form>
+		</td>
+		{% endif %}
+		
+		</tr>
+	{% endfor %}	
+	</table>
+	{% else %}
+    <p>No players in this team.</p>
+	{% endif %}	
         
     <h2 class = "title">Participating in tournaments ({{tournaments|length}})</h2>
     

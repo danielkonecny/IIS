@@ -7,7 +7,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from teams.models import Team
 from tournaments.models import Tournament
+from sponsors.models import Sponsor
 from .models import SignUpForm
+from func.func import compare
 
 def signup(request):
     if request.method == 'POST':
@@ -83,9 +85,7 @@ def request_team_ok(request, id, subid):
         tournament.requests_teams.remove(team) 
     return redirect('forms:profile')
 
-
 # tlacitko chci hrat na profilu ciziho teamu
-
 def request_add_player(request, id_t, id_u):
     team = get_object_or_404(Team, pk=id_t)
     user = get_object_or_404(User, pk=id_u)
@@ -94,18 +94,73 @@ def request_add_player(request, id_t, id_u):
     return redirect('forms:profile')
 
 # tlacitko chci hrat na profilu ciziho teamu
-
 def request_add_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
         tournament.requests_rozhodci.add(user) 
     return redirect('forms:profile')
-    
-    
-    
 
-# BETTAA
+# tlacitko odstraneni usera z tymu
+def remove_player(request, id, subid):
+    team = get_object_or_404(Team, pk=id)
+    user = get_object_or_404(User, pk=subid)
+    if request.method == 'POST':
+        team.players.remove(user) 
+    if not len(team.players): # nezbyli tam zadny hraci, odstran tym
+        team.delete()
+    return redirect('forms:profile')
+
+# tlacitko odstraneni sponzora z turnaje
+def remove_sponsor(request, id, subid):
+    tournament = get_object_or_404(Tournament, pk=id)
+    sponsor = get_object_or_404(Sponsor, pk=subid)
+    if request.method == 'POST':
+        tournament.sponsors.remove(sponsor) 
+    return redirect('forms:profile')    
+
+# tlacitko odstraneni rozhodciho z turnaje
+def remove_rozhodci(request, id, subid):
+    tournament = get_object_or_404(Tournament, pk=id)
+    rozhodci = get_object_or_404(User, pk=subid)
+    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit rozhodci
+        tournament.rozhodci.remove(rozhodci)
+    return redirect('forms:profile')     
+
+# tlacitko odstraneni teamu z turnaje
+def remove_team(request, id, subid):
+    tournament = get_object_or_404(Tournament, pk=id)
+    team = get_object_or_404(Team, pk=subid)
+    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit team
+        tournament.teams.remove(team)
+    return redirect('forms:profile')
+
+# tlacitko odstraneni turnaje z povrchu tohoto nekvalitniho kodu
+def delete_tournament(request, id):
+    tournament = get_object_or_404(Tournament, pk=id)
+    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit team
+        tournament.delete()
+    return redirect('forms:profile')
+
+# tlacitko odstraneni tymu z povrchu tohoto nekvalitniho kodu
+def delete_team(request, id):
+    team = get_object_or_404(Team, pk=id)
+    
+    # vybere turnaje tohohle tymu
+    my_tournaments = team.tour_teams.all()
+    
+    # vyber nastartovane turnaje a zjisti jestli v nejakem hraje tenhle tym
+    started_tournaments = Tournament.objects.filter(started=True)
+    
+    if request.method == 'POST' and not compare(started_tournaments, my_tournaments): # zjisti jestli team nefiguruje v rozjetejch turnajich
+        team.delete()
+    return redirect('forms:profile')
+
+
+
+# BETTAA DOWN HERE
+##################################
+
 # tlacitko chci pridat tym do turnaje
 
 def request_add_team(request, id_tournament, id_team):
