@@ -29,9 +29,9 @@ urlpatterns = [
 	path('sports/', include('sports.urls')),
 	path('teams/', include('teams.urls')),
 	path('users/', include('users.urls')),
-	path('profile/', include('forms.urls')),
+	path('accounts/', include('forms.urls')),
 	path('', views.index, name='index'),
-	path('logout', views.logout_request, name='logout'),
+	path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -139,3 +139,14 @@ padding: 25px;
 font-weight: bold;
 color: #1cbf00;
 }
+
+.square {
+background: #1cbf00;
+color: white;
+width: auto;
+display: block;
+}
+
+.square:hover {
+backgroubd: #1aa602;
+}
