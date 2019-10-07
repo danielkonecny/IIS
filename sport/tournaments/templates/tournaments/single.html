@@ -13,7 +13,10 @@
 	<h2 class = "title">{{tournament.name}}</h2>
 
 		<table class = "detail">
-		
+		<tr>
+		<td>poradatel</td>
+		<td><a href="{% url 'users:single' tournament.poradatele.id %}">{{tournament.poradatele.username}}</a></td>
+		</tr>		
 		<tr>
 		<td>sport</td>
 		<td>{{tournament.sport}}</td>
@@ -38,6 +41,14 @@
 		</table>
 
 		<h2 class="title">Rozhodci ({{rozhodci|length}})</h2>
+		{% if user.is_authenticated and permitted == True and user not in rozhodci %}
+    		<p>
+    		<form action="{% url 'forms:request_add_rozhodci' tournament.id user.id %}" method="POST">
+        		{% csrf_token %}
+        		<input class="square" type="submit" value="I wanna be rozhodci">
+    		</form>
+    		</p>
+		{% endif %}
 
 		{% if rozhodci %}
 		<table class = "detail">
@@ -52,13 +63,17 @@
 		{% endif %}	
 
 		<h2 class="title">Teams ({{teams|length}})</h2>
-
+		
 		{% if teams %}
 		<table class = "detail">
     	{% for t in teams %}
 			<tr>
 			<td><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></td>
-			<td><img src="{{t.flag.url}}" width = "100" /></td>
+			{% if t.flag %}
+				<td>
+				<img src="{{t.flag.url}}" width = "100" />
+				</td>
+			{% endif %}
 			</tr>
 		{% endfor %}	
 		</table>

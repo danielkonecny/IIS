@@ -36,9 +36,11 @@ margin-bottom: 10px;
 }
 
 li.item {
-margin-bottom: 25px;
-background: #fcfcfc;
 padding: 25px;
+}
+
+li.item:nth-child(even) {
+background: #f4f4f4;
 }
 
 a:hover {
@@ -64,7 +66,7 @@ padding: 50px;
 header {
 background: #1aa602;
 color: white;
-width: 100%;
+/*width: 100%;*/
 padding: 100px 50px 0 50px;
 line-height: 35px;
 border-bottom: 20px solid #1cbf00;
@@ -109,7 +111,7 @@ padding: 20px;
 }
 
 table.detail tr:nth-child(odd) {
-background: #fcfcfc;
+background: #f4f4f4;
 }
 
 input {

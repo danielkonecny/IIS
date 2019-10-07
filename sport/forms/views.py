@@ -82,3 +82,45 @@ def request_team_ok(request, id, subid):
         tournament.teams.add(team)
         tournament.requests_teams.remove(team) 
     return redirect('forms:profile')
+
+
+# tlacitko chci hrat na profilu ciziho teamu
+
+def request_add_player(request, id_t, id_u):
+    team = get_object_or_404(Team, pk=id_t)
+    user = get_object_or_404(User, pk=id_u)
+    if request.method == 'POST':
+        team.requests_players.add(user) 
+    return redirect('forms:profile')
+
+# tlacitko chci hrat na profilu ciziho teamu
+
+def request_add_rozhodci(request, id, subid):
+    tournament = get_object_or_404(Tournament, pk=id)
+    user = get_object_or_404(User, pk=subid)
+    if request.method == 'POST':
+        tournament.requests_rozhodci.add(user) 
+    return redirect('forms:profile')
+    
+    
+    
+
+# BETTAA
+# tlacitko chci pridat tym do turnaje
+
+def request_add_team(request, id_tournament, id_team):
+    team = get_object_or_404(Team, pk=id_team)
+    tournament = get_object_or_404(Tournament, pk=id_tournament)
+    if request.method == 'POST':
+        tournament.requests_teams.add(team) 
+    return redirect('forms:profile')
+
+
+# BETA
+#create new team
+
+def create_team(request, id_u):
+    user = get_object_or_404(User, pk=id_u)
+    if request.method == 'POST':
+        team.requests_players.add(user) 
+    return redirect('forms:profile')

@@ -30,6 +30,15 @@
 
     <h2 class = "title">Players ({{players|length}})</h2>
     
+    {% if user.is_authenticated and user not in team.managers.all and user not in team.players %}
+    	<p>
+        <form action="{% url 'forms:request_add_player' team.id user.id %}" method="POST">
+            {% csrf_token %}
+            <input class="square" type="submit" value="I wanna play">
+        </form>
+    	</p>
+    {% endif %}
+    
 		{% if players %}
 		<table class = "detail">
     	{% for p in players %}

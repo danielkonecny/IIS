@@ -25,24 +25,24 @@
     	<div class="block">
         	{% block sidebar %}
         	<ul>
-        		<li><a href="/">Homepage</a></li>
-        		
+        		<li><strong><a href="/">Homepage</a></strong></li>
+				<li><a href="/tournaments">Tournaments</a></li>
+				
         		<li class="green">Users</li>
         		<ul class="lpad">
         			<li><a href="/users/players">Players</a>
         			<li><a href="/users/managers">Managers</a>
         			<li><a href="/users/rozhodci">Rozhodci</a>
         		</ul>
-				<li><a href="/tournaments">Tournaments</a></li>
 
-        		<li class="green">Users</li>
-        		<ul class="lpad">
+        		<li class="green">Administration</li>
+        		<ul class="lpad">            		
             		<li><a href="/admin/">Admin</a></li>
-            		<li><a href="/profile/signup/">Register</a></li>
-            		
             	{% if user.is_authenticated %}
+            		<li><a href="{% url 'forms:profile' %}">Profile</a>
             		<li><a href="{% url 'logout' %}">Logout</a></li>
             	{% else %}
+            		<li><a href="{% url 'forms:signup' %}">Register</a></li>
             		<li><a href="{% url 'login' %}">Login</a></li>
             	{% endif %}
         		</ul>

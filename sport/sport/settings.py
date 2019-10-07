@@ -27,6 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+	'func.apps.FuncConfig',
 	'forms.apps.FormsConfig',
 	'users.apps.UsersConfig',
 	'matches.apps.MatchesConfig',
