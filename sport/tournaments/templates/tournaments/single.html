@@ -107,6 +107,16 @@
 		{% endif %}	
 
 		<h2 class="title">Teams ({{teams|length}})</h2>
+
+		{% if user.is_authenticated and permitted_add == True and available_teams %}
+		<td>
+        	<form action="{% url 'forms:request_add_team' tournament.id team.id %}" method="POST">
+            	{% csrf_token %}
+            	<select = >
+            	<input class="square" type="submit" value="Register team">
+        	</form>
+		</td>
+		{% endif %}
 		
 		{% if teams %}
 		<table class = "detail">

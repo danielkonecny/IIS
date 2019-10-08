@@ -2,6 +2,9 @@ from django.shortcuts import get_object_or_404, render
 from .models import Team
 from tournaments.models import Tournament
 from func.func import compare
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def single(request,id):
     team = get_object_or_404(Team,pk=id)
@@ -18,5 +21,10 @@ def single(request,id):
 
 def index(request):
     front = Team.objects.all()
-
     return render(request, 'teams/index.html', {'front':front})
+
+@login_required
+def your_teams(request):
+	user = get_object_or_404(User,pk=request.user.id)
+	front = Team.objects.filter(Q(managers=user), Q(players__in=[user])) # vem tymy kde to ridi nebo v nich hraje
+	return render(request, 'teams/index.html', {'front':front})

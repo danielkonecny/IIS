@@ -156,13 +156,7 @@ def delete_team(request, id):
         team.delete()
     return redirect('forms:profile')
 
-
-
-# BETTAA DOWN HERE
-##################################
-
 # tlacitko chci pridat tym do turnaje
-
 def request_add_team(request, id_tournament, id_team):
     team = get_object_or_404(Team, pk=id_team)
     tournament = get_object_or_404(Tournament, pk=id_tournament)

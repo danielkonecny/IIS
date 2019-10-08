@@ -22,9 +22,9 @@
 
 	{% if user.is_authenticated and user == team.managers and permitted == True %}
 	<p>
-        <form action="{% url 'forms:delete_tournament' tournament.id %}" method="POST">
+        <form action="{% url 'forms:delete_tournament' team.id %}" method="POST">
             {% csrf_token %}
-            <input class="square red" type="submit" value="Delete tournament">
+            <input class="square red" type="submit" value="Delete team">
         </form>
     </p>
     {% endif %}

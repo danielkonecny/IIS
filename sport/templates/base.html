@@ -39,6 +39,8 @@
         		<ul class="lpad">            		
             		<li><a href="/admin/">Admin</a></li>
             	{% if user.is_authenticated %}
+            		<li><a href="{% url 'teams:your_teams' %}">Your teams</a></li>
+            		<li><a href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a></li>
             		<li><a href="{% url 'forms:profile' %}">Profile</a>
             		<li><a href="{% url 'logout' %}">Logout</a></li>
             	{% else %}

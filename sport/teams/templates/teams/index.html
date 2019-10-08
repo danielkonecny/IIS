@@ -11,15 +11,7 @@
 {% block content %}
 
 
-	{% if user.is_authenticated %}
-	
-    	<p>
-    	<form action="{% url 'forms:create_team' user.id %}" method="POST">
-        	{% csrf_token %}
-        	<input class="square" type="submit" value="New team">
-    	</form>
-    	</p>		
-	{% endif %}
+
 
 	{% if front %}
     	<ul>
@@ -32,9 +24,11 @@
             		</h2>
             		</a>
             	</p>
+            	{% if t.flag %}
             	<p>
             		<img src='{{t.flag.url}}' width='100' />
             	</p>
+            	{% endif %}
         	</li>
     	{% endfor %}
     	</ul>
