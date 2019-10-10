@@ -11,6 +11,8 @@ from sponsors.models import Sponsor
 from .models import SignUpForm
 from func.func import compare
 
+from .forms import AddTeamForm
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -27,16 +29,14 @@ def signup(request):
 
 @login_required
 def profile(request):
-    
-    user = get_object_or_404(User,pk=request.user.id)
 
     # seznam jeho requestu pokud je manager teamu
-    requests_players = Team.objects.filter(managers=user)
+    requests_players = Team.objects.filter(managers=request.user)
     
     # seznam jeho requestu pokud je poradatel turnaje - na rozhodci a na hrace turnaje
-    requests_tournaments = Tournament.objects.filter(poradatele=user)
+    requests_tournaments = Tournament.objects.filter(poradatele=request.user)
     
-    return render(request, 'forms/profile.html', {'user': user, 'requests_players':requests_players, 'requests_tournaments':requests_tournaments})
+    return render(request, 'forms/profile.html', {'user': request.user, 'requests_players':requests_players, 'requests_tournaments':requests_tournaments})
 
 def request_player_remove(request, id, subid):
     team = get_object_or_404(Team, pk=id)
@@ -107,7 +107,7 @@ def remove_player(request, id, subid):
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
         team.players.remove(user) 
-    if not len(team.players): # nezbyli tam zadny hraci, odstran tym
+    if not team.players.count: # nezbyli tam zadny hraci, odstran tym
         team.delete()
     return redirect('forms:profile')
 
@@ -155,18 +155,6 @@ def delete_team(request, id):
     if request.method == 'POST' and not compare(started_tournaments, my_tournaments): # zjisti jestli team nefiguruje v rozjetejch turnajich
         team.delete()
     return redirect('forms:profile')
-
-# tlacitko chci pridat tym do turnaje
-def request_add_team(request, id_tournament, id_team):
-    team = get_object_or_404(Team, pk=id_team)
-    tournament = get_object_or_404(Tournament, pk=id_tournament)
-    if request.method == 'POST':
-        tournament.requests_teams.add(team) 
-    return redirect('forms:profile')
-
-
-# BETA
-#create new team
 
 def create_team(request, id_u):
     user = get_object_or_404(User, pk=id_u)

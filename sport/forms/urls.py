@@ -19,8 +19,7 @@ urlpatterns = [
  
     path(r'^request_add_rozhodci(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_rozhodci, name='request_add_rozhodci'), 
     
-    path(r'^request_add_player(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_player, name='request_add_player'),  
-    path(r'^request_add_team(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_team, name='request_add_team'),  
+    path(r'^request_add_player(?P<id>\w+)/(?P<subid>\w+)/$', views.request_add_player, name='request_add_player'),   
     
     path(r'^remove_player(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_player, name='remove_player'),
     path(r'^remove_sponsor(?P<id>\w+)/(?P<subid>\w+)/$', views.remove_sponsor, name='remove_sponsor'),

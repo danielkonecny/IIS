@@ -4,7 +4,8 @@ from tournaments.models import Tournament
 from func.func import compare
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, Count
+from forms.forms import CreateTeam
 
 def single(request,id):
     team = get_object_or_404(Team,pk=id)
@@ -20,8 +21,19 @@ def single(request,id):
     return render(request, 'teams/single.html', {'team': team,'tournaments':tournaments,'players':players,'manager':manager,'permitted':permitted})
 
 def index(request):
-    front = Team.objects.all()
-    return render(request, 'teams/index.html', {'front':front})
+    front = Team.objects.annotate(num_players=Count('players')).filter(num_players__gt=1) # tymy s poctem hracu 1 to umyslne skryva, takove tymy jsou bud nekompletni nebo singleplayerove
+
+    # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU    
+    if request.method == 'POST':  
+        add_new = CreateTeam(request.POST)
+        if add_new.is_valid():
+            new = add_new.save(commit=False)
+            new.managers = request.user
+            new.save()
+    else:
+        add_new = CreateTeam()
+    
+    return render(request, 'teams/index.html', {'front':front,'add_new':add_new})
 
 @login_required
 def your_teams(request):

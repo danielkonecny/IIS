@@ -106,16 +106,17 @@
     		<p>No rozhodci registered.</p>
 		{% endif %}	
 
+
 		<h2 class="title">Teams ({{teams|length}})</h2>
 
-		{% if user.is_authenticated and permitted_add == True and available_teams %}
-		<td>
-        	<form action="{% url 'forms:request_add_team' tournament.id team.id %}" method="POST">
-            	{% csrf_token %}
-            	<select = >
-            	<input class="square" type="submit" value="Register team">
-        	</form>
-		</td>
+		{% if user.is_authenticated and permitted_add == True %}
+			<p>
+				<form method="post" action="{% url 'tournaments:single' tournament.id %}">
+				{% csrf_token %}
+				{{add_new.as_p}}		
+            	<input class="square" type="submit" value="Add team">
+				</form>
+			</p>
 		{% endif %}
 		
 		{% if teams %}

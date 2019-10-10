@@ -3,8 +3,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script> 
     <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
     <title>{% block title %}sportBET 1.0{% endblock %}</title>
+
 </head>
 
 <body>
@@ -26,13 +29,14 @@
         	{% block sidebar %}
         	<ul>
         		<li><strong><a href="/">Homepage</a></strong></li>
-				<li><a href="/tournaments">Tournaments</a></li>
+				<li><a href="{% url 'tournaments:index' %}">Tournaments</a></li>
+				<li><a href="{% url 'teams:index' %}">Teams</a></li>
 				
         		<li class="green">Users</li>
         		<ul class="lpad">
-        			<li><a href="/users/players">Players</a>
-        			<li><a href="/users/managers">Managers</a>
-        			<li><a href="/users/rozhodci">Rozhodci</a>
+        			<li><a href="{% url 'users:players' %}">Players</a>
+        			<li><a href="{% url 'users:managers' %}">Managers</a>
+        			<li><a href="{% url 'users:rozhodci' %}">Rozhodci</a>
         		</ul>
 
         		<li class="green">Administration</li>
