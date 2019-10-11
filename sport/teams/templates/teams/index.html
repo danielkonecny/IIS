@@ -10,28 +10,15 @@
 
 {% block content %}
 
-<script type="text/javascript">
-$(document).ready(function() {
-  $("#toggle").click(function() {
-    $("#form").toggle("fast");
-  });
-});
-</script>
-
 {% if user.is_authenticated %}
-<button id="toggle">+ Team</button>
-	<div class = "bpad" id = "form" style="display: none; padding-top: 25px;">
-		<form method="post" action="{% url 'teams:index' %}">
-		{% csrf_token %}
-		{{add_new.as_p}}		
-        <input class="square" type="submit" value="Create new team">
-		</form>
+	<div class="inner">
+		<a class="button" href ="{% url 'forms:create_team' %}">+ new team</a>
 	</div>
 {% endif %}
 
 
 	{% if front %}
-    	<ul>
+    	<ul class="inner">
     	{% for t in front %}
         	<li class="item">
                 <p>

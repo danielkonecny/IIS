@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit tournament{% endblock %}
+
+{% block header %}Edit tournament{% endblock %}
+
+{% block content %}
+  <form method="post" action = "{% url 'forms:edit_tournament' tournament.id %}">
+    {% csrf_token %}
+    {{edit.as_p}}
+    <button type="submit">Save changes</button>
+  </form>
+{% endblock %}

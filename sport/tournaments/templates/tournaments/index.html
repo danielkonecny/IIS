@@ -10,8 +10,14 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+	<div class="inner">
+		<a class="button" href ="{% url 'forms:create_tournament' %}">+ new tournament</a>
+	</div>
+{% endif %}
+
 	{% if front %}
-    	<ul>
+    	<ul class="inner">
     	{% for t in front %}
         	<li class="item">
                 <p>

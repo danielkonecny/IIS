@@ -28,6 +28,8 @@ urlpatterns = [
 
     path(r'^delete_tournament(?P<id>\w+)/$', views.delete_tournament, name='delete_tournament'),
     path(r'^delete_team(?P<id>\w+)/$', views.delete_team, name='delete_team'),
-    
+    path(r'^edit_tournament(?P<id>\w+)/$', views.edit_tournament, name='edit_tournament'),
+    path(r'^create_tournament$', views.create_tournament, name='create_tournament'),
+    path(r'^create_team$', views.create_team, name='create_team'),
 ]
 

@@ -38,6 +38,8 @@ margin-bottom: 10px;
 
 li.item {
 padding: 25px;
+border: 1px solid #f4f4f4;
+margin-bottom: 0;
 }
 
 li.item:nth-child(even) {
@@ -62,6 +64,11 @@ margin-bottom: 25px;
 
 .block {
 padding: 50px;
+}
+
+.inner {
+float: left;
+width: 100%;
 }
 
 header {
@@ -90,6 +97,10 @@ margin: 0 auto;
 #content {
 float: left;
 width: 80%;
+}
+
+#inner-content {
+padding: 50px;
 }
 
 #sidebar {
@@ -123,11 +134,12 @@ border: 1px solid #f4f4f4;
 padding: 15px;
 }
 
-button {
+.button, button {
 background: #1aa602;
 color: white;
 padding: 15px;
 border: none;
+text-decoration: none;
 }
 
 ul.messages {
@@ -149,6 +161,8 @@ background: #1cbf00;
 color: white;
 width: auto;
 display: block;
+cursor: pointer;
+border: none;
 }
 
 .square:hover {
@@ -157,4 +171,9 @@ backgroubd: #1aa602;
 
 .red {
 background: #d53e00;
+}
+
+.button {
+float: left;
+font-weight: normal;
 }

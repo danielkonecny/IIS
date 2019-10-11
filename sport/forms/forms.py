@@ -1,6 +1,7 @@
 from django import forms
 from teams.models import Team
 from django.forms import ModelForm
+from tournaments.models import Tournament
 
 # formular pridani teamu do turnaje
 class AddTeamForm(forms.Form):
@@ -20,7 +21,12 @@ class CreateTeam(ModelForm):
         model = Team
         fields = ['id', 'name','flag'] # pridani noveho tymu
 
-#class TournamentForm(ModelForm):
-#    class Meta:
-#        model = Team # DOPLNIT FIELDS!
-#        fields = ['entry', 'name','player_count', 'started', 'sport','singleplayer'] # pridani / edit turnaje
+class CreateTournament(ModelForm):
+    class Meta:
+        model = Tournament
+        fields = ['id','name','sport','singleplayer','entry','player_count'] # pridani noveho turnaje
+
+class TournamentForm(ModelForm):
+    class Meta:
+        model = Tournament
+        fields = ['name','entry','player_count'] # edit turnaje
