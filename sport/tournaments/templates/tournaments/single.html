@@ -125,11 +125,11 @@
     	{% for t in teams %}
 			<tr>
 			<td><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></td>
+			<td>
 			{% if t.flag %}
-				<td>
-				<img src="{{t.flag.url}}" width = "100" />
-				</td>
+			<img src="{{t.flag.url}}" width = "100" />
 			{% endif %}
+			</td>
 			{% if user.is_authenticated and not tournament.started %}
 				{% if user == tournament.poradatele or user == t.managers %}
 				<td>

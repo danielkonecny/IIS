@@ -23,9 +23,9 @@
             	</p>
             	<p>
             		{% if p.team_teams %}
-            		plays in 
+            		plays in:
             		{% for t in p.team_teams.all %}
-            		<i>{{t.name}}</i>&nbsp;&nbsp;&nbsp;
+            		<i><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></i>&nbsp;&nbsp;/&nbsp;&nbsp;
             		{% endfor %}
             		{% endif %}
             		
@@ -33,6 +33,19 @@
         	</li>
     	{% endfor %}
     	</ul>
+    	
+		<div class="paging">
+        		{% if players.has_previous %}
+            		<a href="?page={{ players.previous_page_number }}">&larr;</a>
+        		{% endif %}
+		
+            	{{ players.number }} / {{ players.paginator.num_pages }}
+		
+        		{% if players.has_next %}
+            		<a href="?page={{ players.next_page_number }}">&rarr;</a>
+        		{% endif %}
+		</div>
+    	
 	{% else %}
     	<p>No players to show.</p>
 	{% endif %}

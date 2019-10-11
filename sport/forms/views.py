@@ -33,15 +33,13 @@ def signup(request):
 
 @login_required
 def profile(request):
-
     # seznam jeho requestu pokud je manager teamu
     requests_players = Team.objects.filter(managers=request.user)
-    
     # seznam jeho requestu pokud je poradatel turnaje - na rozhodci a na hrace turnaje
     requests_tournaments = Tournament.objects.filter(poradatele=request.user)
-    
     return render(request, 'forms/profile.html', {'user': request.user, 'requests_players':requests_players, 'requests_tournaments':requests_tournaments})
 
+# odstran hrace z requestu
 def request_player_remove(request, id, subid):
     team = get_object_or_404(Team, pk=id)
     user = get_object_or_404(User, pk=subid)
@@ -49,7 +47,8 @@ def request_player_remove(request, id, subid):
         team.requests_users.remove(user)
         messages.success(request, 'Request removed.')  
     return redirect('forms:profile')
-    
+ 
+# prijmi hrace do tymu    
 def request_player_ok(request, id, subid):
     team = get_object_or_404(Team, pk=id)
     user = get_object_or_404(User, pk=subid)
@@ -59,7 +58,7 @@ def request_player_ok(request, id, subid):
         messages.success(request, 'Request accepted.')  
     return redirect('forms:profile')
 
-
+#odstran request rozhodciho z turnaje
 def request_rozhodci_remove(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
@@ -68,6 +67,7 @@ def request_rozhodci_remove(request, id, subid):
         messages.success(request, 'Request removed.')
     return redirect('forms:profile')
 
+# prijmi rozhodciho na turnaj
 def request_rozhodci_ok(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
@@ -77,7 +77,7 @@ def request_rozhodci_ok(request, id, subid):
         messages.success(request, 'Request accepted.')
     return redirect('forms:profile')
 
-
+# odstran request teamu poradatelem turnaje
 def request_team_remove(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     team = get_object_or_404(Team, pk=subid)
@@ -86,6 +86,7 @@ def request_team_remove(request, id, subid):
         messages.success(request, 'Request removed.')
     return redirect('forms:profile')
 
+# prijeti tymu na turnaj poradatelem
 def request_team_ok(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     team = get_object_or_404(Team, pk=subid)
@@ -100,11 +101,11 @@ def request_add_player(request, id_t, id_u):
     team = get_object_or_404(Team, pk=id_t)
     user = get_object_or_404(User, pk=id_u)
     if request.method == 'POST':
-        team.requests_players.add(user) 
+        team.requests_users.add(user) 
         messages.success(request, 'Request sent.')
     return redirect('forms:profile')
 
-# tlacitko chci hrat na profilu ciziho teamu
+# tlacitko chci rozhodcovat na profilu ciziho teamu
 def request_add_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)

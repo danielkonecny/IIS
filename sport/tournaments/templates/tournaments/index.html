@@ -39,6 +39,19 @@
         	</li>
     	{% endfor %}
     	</ul>
+    	
+		<div class="paging">
+        		{% if front.has_previous %}
+            		<a href="?page={{ front.previous_page_number }}">&larr;</a>
+        		{% endif %}
+		
+            	{{ front.number }} / {{ front.paginator.num_pages }}
+		
+        		{% if front.has_next %}
+            		<a href="?page={{ front.next_page_number }}">&rarr;</a>
+        		{% endif %}
+		</div>
+    	
 	{% else %}
     	<p>No tournaments to show.</p>
 	{% endif %}

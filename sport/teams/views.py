@@ -4,7 +4,8 @@ from tournaments.models import Tournament
 from func.func import compare
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Q, Count
+from django.db.models import Q #, Count
+from django.core.paginator import Paginator
 
 def single(request,id):
     team = get_object_or_404(Team,pk=id)
@@ -16,13 +17,21 @@ def single(request,id):
     # zjistit jestli zobrazovat delete team tlacitko
     active_tournaments = Tournament.objects.filter(started=True) 
     permitted = not compare(tournaments, active_tournaments)
+    
+    # zjisti jestli se muze nabidnout do tymu jako hrac
+    
+    able_to_play = True
+    if team.singleplayerteam and team.players.count():
+        able_to_play = False
         
-    return render(request, 'teams/single.html', {'team': team,'tournaments':tournaments,'players':players,'manager':manager,'permitted':permitted})
+    return render(request, 'teams/single.html', {'team': team,'tournaments':tournaments,'players':players,'manager':manager,'permitted':permitted,'able_to_play':able_to_play})
 
 def index(request):
-    front = Team.objects.annotate(num_players=Count('players')).filter(num_players__gt=1) # tymy s poctem hracu 1 to umyslne skryva, takove tymy jsou bud nekompletni nebo singleplayerove
-    
-    return render(request, 'teams/index.html', {'front':front})
+    front = Team.objects.all()
+    paginator = Paginator(front, 10)
+    page = request.GET.get('page')  
+    content = paginator.get_page(page)
+    return render(request, 'teams/index.html', {'front':content})
 
 @login_required
 def your_teams(request):

@@ -6,7 +6,7 @@ from tournaments.models import Tournament
 # formular pridani teamu do turnaje
 class AddTeamForm(forms.Form):
 
-    teams = forms.ModelChoiceField(queryset=Team.objects.all()) # tohle je prvek formulare OPRAVIT NA NECO ROZUMNYHO
+    teams = forms.ModelChoiceField(queryset=Team.objects.all()) # tohle je povinnej prvek formulare, OPRAVIT NA NECO ROZUMNYHO
 
     def __init__(self,*args,**kwargs): # custom konstrukce formulare
         t = kwargs.pop('t') # vytahni z argumentu aktualni request

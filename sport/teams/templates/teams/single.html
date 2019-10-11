@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block header %}
-	Teams > {{team.name}}
+	Teams > {{team.name}} {% if team.singleplayerteam %} (single-player) {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -37,9 +37,9 @@
 			</tr>
 		</table>
 
-    <h2 class = "title">Players ({{players|length}})</h2>
+    <h2 class="title">Players ({{players|length}})</h2>
     
-    {% if user.is_authenticated and user != manager and user not in team.players %}
+    {% if user.is_authenticated and able_to_play == True %}
     	<p>
         <form action="{% url 'forms:request_add_player' team.id user.id %}" method="POST">
             {% csrf_token %}

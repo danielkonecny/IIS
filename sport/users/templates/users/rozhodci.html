@@ -23,9 +23,9 @@
             	</p>
             	<p>
             		{% if p.tour_rozhodci %}
-            		rozhodcuje 
+            		rozhodcuje: 
             		{% for t in p.tour_rozhodci.all %}
-            		<i>{{t.name}}</i>&nbsp;&nbsp;&nbsp;
+            		<a href="{% url 'tournaments:single' t.id %}"><i>{{t.name}}</i></a>&nbsp;&nbsp;/&nbsp;&nbsp;
             		{% endfor %}
             		{% endif %}
             		
@@ -33,6 +33,19 @@
         	</li>
     	{% endfor %}
     	</ul>
+    	
+		<div class="paging">
+        		{% if players.has_previous %}
+            		<a href="?page={{ players.previous_page_number }}">&larr;</a>
+        		{% endif %}
+		
+            	{{ players.number }} / {{ players.paginator.num_pages }}
+		
+        		{% if players.has_next %}
+            		<a href="?page={{ players.next_page_number }}">&rarr;</a>
+        		{% endif %}
+		</div>
+    	
 	{% else %}
     	<p>No rozhodci to show.</p>
 	{% endif %}

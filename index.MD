@@ -8,11 +8,6 @@
      '. '-_|____-' .'
        '.________.'
 
-MOJE
-----
-paging
-singleplayer:
-team co ma vic nez 1 hr nesmi pozadat o vstup do nesingleplayer. Do tohohle teamu se nesmi nikdo pridat. Mozna radsi udelat specialni podtridu pro singleplayer teamy.
 
 ///////////////////////////
                          //
@@ -20,9 +15,9 @@ POZNAMKY                 //
                          //
 ///////////////////////////
 
--odkazy na formulare radsi pres A, nepouzivat dva FORMy za sebou
--kdyz najdete bug, nejaky drobnosti tam budou, ty nejhorsi picoviny mi dat do issues a opravim je at se v tom nemusite nejak moc vrtat
--pouzivat django.contrib messages
+*kdyz najdete bug, nejaky tam budou, ty nejhorsi veci mi dat do issues na githubu a opravim je, at se v tom nemusite nejak moc vrtat
+*pouzivat django.contrib.messages
+*otestovat unicode
 
 ///////////////////////////
                          //
@@ -30,14 +25,28 @@ ZBYTEK                   //
                          //
 ///////////////////////////
 
--pridat sponzora do turnaje
--implementovat zapasy, vysledky zapasu, rozlosovani a statistiky
--turnaj pujde editovat pouze do dokonceni, az se ukonci (tj pocet zapasu bude naplnenej, tak se deaktivuje)
--pokud pridava sebe do tymu, tak pridat primo a bez requestu
--kde je potreba prohodit uzivatelska jmena za skutecna a nastavit ulozeni first name a last name jako povinne u uzivatele
--nastavit picoviny jako ze na zaplej turnaj se neda registrovat atd.
--trochu si pohrat s sablonama, aby se neopakovaly tak je rozdelit na mensi (viz google "django generic views" nebo tak neco)
--v sablone profile html dat aby se nevypisovala tabulka kdyz nic neni v .all
--team by mel jit editovat stejne jako turnaj
--otestovat unicode
--presmerovavat z forms:'all' na stranku odkud prisel, jen nahradit forms:profile za neco jinyho vsude
+VETSI VECI:
+*pridat sponzora do turnaje
+*implementovat zapasy, vysledky zapasu, rozlosovani a statistiky
+*trochu si pohrat se vsema sablonama, aby se neopakovaly tak je rozdelit na mensi (viz google "django generic views" nebo tak neco). treba tri sablony pro index uzivatelu, kde by stacila jedina. strankovani do jedne sablony atd.
+DROBNOSTI:
+*pokud pridava sebe jako hrace do tymu, tak pridat primo a bez requestu
+*pokud mu patri tym i turnaj tak pridat automaticky, bez requestu
+*nastavit ze na bezici turnaj se neda registrovat atd.
+*nastavit aby se na plnej turnaj nedaly posilat requesty o registraci
+*turnaj pujde editovat pouze do dokonceni, az se ukonci (tj pocet zapasu bude naplnenej, tak se deaktivuje)
+*nekde v sablonach je potreba prohodit uzivatelska jmena za skutecna, nechtelo se mi to vyplnovat
+*nastavit ulozeni first name a last name jako povinne u uzivatele ve formulari
+*v sablone profile.html dat aby se nevypisovala tabulka kdyz nic neni v .all
+*team by mel jit editovat stejne jako turnaj, mozna s max poctem hracu?
+*po operacich s formularem skacu na forms:profile, skakat jinam
+*pridat do detailu usera seznam tymu ktery ridi a nejaky podobny picoviny, vsechno je nachystany
+            _
+         __| |___
+       .' _| |__ '.
+     .' .- |    -. '.
+    .' |   |( |\  | '.
+    | <    |  | |  | |
+    '. |   |( |/  | .'
+     '. '-_|____-' .'
+       '.________.'

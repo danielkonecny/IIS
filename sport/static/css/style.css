@@ -75,14 +75,13 @@ header {
 background: #1aa602;
 text-transform: uppercase;
 color: white;
-/*width: 100%;*/
 padding: 100px 50px 0 50px;
-line-height: 38px;
+line-height: 33px;
 border-bottom: 20px solid #1cbf00;
 }
 
 header h1 {
-font-size: 50px;
+font-size: 40px;
 }
 
 header .block {
@@ -176,4 +175,8 @@ background: #d53e00;
 .button {
 float: left;
 font-weight: normal;
+}
+
+ul.inner {
+margin-bottom: 25px;
 }

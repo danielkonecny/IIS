@@ -4,6 +4,7 @@ from teams.models import Team
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from func.func import compare
 from forms.forms import AddTeamForm
@@ -23,10 +24,9 @@ def single(request,id):
     available_teams = None
     permitted_add = False
     if not tournament.started:
-        available_teams = managing_teams.exclude(Q(tour_teams__in=[tournament]))
-        available_teams = available_teams.exclude(Q(tour_requests_teams__in=[tournament]))
-
-    print(available_teams)
+        available_teams = managing_teams.exclude(tour_teams__in=[tournament])
+        available_teams = available_teams.exclude(tour_requests_teams__in=[tournament])
+        available_teams = available_teams.filter(singleplayerteam=tournament.singleplayer)
 
     # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE    
     if request.method == 'POST':
@@ -51,8 +51,10 @@ def single(request,id):
     
 def index(request):
     front = Tournament.objects.all()
-    
-    return render(request, 'tournaments/index.html', {'front':front})
+    paginator = Paginator(front, 10)
+    page = request.GET.get('page')  
+    content = paginator.get_page(page)
+    return render(request, 'tournaments/index.html', {'front':content})
 
 @login_required
 def your_tournaments(request):
