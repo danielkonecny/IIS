@@ -22,7 +22,6 @@
 * implementovat zapasy, vysledky zapasu, rozlosovani a statistiky
 * trochu si pohrat se vsema sablonama, aby se neopakovaly tak je rozdelit na mensi (viz google "django generic views" nebo tak neco). treba tri sablony pro index uzivatelu, kde by stacila jedina. strankovani do jedne sablony atd.
 ### DROBNOSTI:
-* pokud pridava sebe jako hrace do tymu, tak pridat primo a bez requestu
 * pokud mu patri tym i turnaj tak pridat automaticky, bez requestu
 * nastavit ze na bezici turnaj se neda registrovat atd.
 * nastavit aby se na plnej turnaj nedaly posilat requesty o registraci
@@ -33,3 +32,6 @@
 * team by mel jit editovat stejne jako turnaj, mozna s max poctem hracu?
 * po operacich s formularem skacu na forms:profile, skakat jinam
 * pridat do detailu usera seznam tymu ktery ridi a nejaky podobny picoviny, vsechno je nachystany
+
+### KONZULTACE:
+* Pri smazani posledniho hrace z teamu nemazeme team

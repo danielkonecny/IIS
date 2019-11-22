@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include,path
+from django.urls import include, path
 from . import views
 
 from django.conf import settings
@@ -22,16 +22,16 @@ from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
-	path('matches/', include('matches.urls')),
-	path('sponsors/', include('sponsors.urls')),
+    path('matches/', include('matches.urls')),
+    path('sponsors/', include('sponsors.urls')),
     path('admin/', admin.site.urls),
-	path('tournaments/', include('tournaments.urls')),
-	path('sports/', include('sports.urls')),
-	path('teams/', include('teams.urls')),
-	path('users/', include('users.urls')),
-	path('accounts/', include('forms.urls')),
-	path('', views.index, name='index'),
-	path('accounts/', include('django.contrib.auth.urls')),
+    path('tournaments/', include('tournaments.urls')),
+    path('sports/', include('sports.urls')),
+    path('teams/', include('teams.urls')),
+    path('users/', include('users.urls')),
+    path('accounts/', include('forms.urls')),
+    path('', views.index, name='index'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

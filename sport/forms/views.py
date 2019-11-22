@@ -100,10 +100,16 @@ def request_team_ok(request, id, subid):
 def request_add_player(request, id_t, id_u):
     team = get_object_or_404(Team, pk=id_t)
     user = get_object_or_404(User, pk=id_u)
-    if request.method == 'POST':
-        team.requests_users.add(user) 
-        messages.success(request, 'Request sent.')
-    return redirect('forms:profile')
+    if team.managers.id == user.id:
+        if request.method == 'POST':
+            team.players.add(user)
+            messages.success(request, 'Player added.')
+        return redirect('teams:single', team.id)
+    else:
+        if request.method == 'POST':
+            team.requests_users.add(user)
+            messages.success(request, 'Request sent.')
+        return redirect('forms:profile')
 
 # tlacitko chci rozhodcovat na profilu ciziho teamu
 def request_add_rozhodci(request, id, subid):
@@ -121,10 +127,13 @@ def remove_player(request, id, subid):
     if request.method == 'POST':
         team.players.remove(user)
         messages.success(request, 'Player removed.')
-    if not team.players.count: # nezbyli tam zadny hraci, odstran tym
-        team.delete()
-        messages.success(request, 'Last player removed and team deleted.')
-    return redirect('forms:profile')
+    #     nebudeme mazat tym bez hracu + if not team.players.count nefunguje
+    # if not team.players.count: # nezbyli tam zadny hraci, odstran tym
+    #     team.delete()
+    #     messages.success(request, 'Last player removed and team deleted.')
+    #     return redirect('forms:profile')
+    # else:
+        return redirect('teams:single', team.id)
 
 # tlacitko odstraneni sponzora z turnaje
 def remove_sponsor(request, id, subid):

@@ -27,14 +27,14 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-	'func.apps.FuncConfig',
-	'forms.apps.FormsConfig',
-	'users.apps.UsersConfig',
-	'matches.apps.MatchesConfig',
-	'sponsors.apps.SponsorsConfig',
-	'teams.apps.TeamsConfig',
-	'sports.apps.SportsConfig',
-	'tournaments.apps.TournamentsConfig',
+    'func.apps.FuncConfig',
+    'forms.apps.FormsConfig',
+    'users.apps.UsersConfig',
+    'matches.apps.MatchesConfig',
+    'sponsors.apps.SponsorsConfig',
+    'teams.apps.TeamsConfig',
+    'sports.apps.SportsConfig',
+    'tournaments.apps.TournamentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,7 +59,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-        BASE_DIR + '/templates',
+            BASE_DIR + '/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -75,23 +75,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sport.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': 'sport',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': ':sqlite3.db',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        # 'PORT': '80',
     }
 }
 
-#AUTH_USER_MODEL = "users.User"
+# AUTH_USER_MODEL = "users.User"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -111,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -124,7 +122,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 
