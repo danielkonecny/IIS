@@ -14,6 +14,7 @@
 * kdyz najdete bug, nejaky tam budou, ty nejhorsi veci mi dat do issues na githubu a opravim je, at se v tom nemusite nejak moc vrtat
 * pouzivat django.contrib.messages
 * otestovat unicode
+* hesla ke vsem profilum q1w1e1r1
 
 ## ZBYTEK
 
