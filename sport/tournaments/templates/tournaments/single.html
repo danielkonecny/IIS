@@ -49,6 +49,18 @@
         	<a class = "button red" href="{% url 'forms:edit_tournament' tournament.id %}">Edit tournament</a>
         </div>
         {% endif %}
+
+        <h2 class="title">Sponsors ({{sponsors|length}})</h2>
+
+{#        {% if user.is_authenticated and permitted_add_sponsor == True %}#}
+			<p>
+				<form method="post" action="{% url 'tournaments:single' tournament.id %}">
+				{% csrf_token %}
+				{{add_new_sponsor.as_p}}
+            	<input class="square" type="submit" value="Add sponsor">
+				</form>
+			</p>
+{#		{% endif %}#}
         
 		{% if sponsors %}
 		<h2 class="title">Brought to you by:</h2>
@@ -110,11 +122,11 @@
 
 		<h2 class="title">Teams ({{teams|length}})</h2>
 
-		{% if user.is_authenticated and permitted_add == True %}
+		{% if user.is_authenticated and permitted_add_team == True %}
 			<p>
 				<form method="post" action="{% url 'tournaments:single' tournament.id %}">
 				{% csrf_token %}
-				{{add_new.as_p}}		
+				{{add_new_team.as_p}}
             	<input class="square" type="submit" value="Add team">
 				</form>
 			</p>
