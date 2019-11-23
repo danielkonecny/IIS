@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+	Tournament - {{tournament.name}}
+{% endblock %}
+
+{% block header %}
+	Tournaments > {{tournament.name}}
+{% endblock %}
+
+{% block content %}
+
+	<h2 class = "title">{{tournament.name}}</h2>
+    
+
+{#		{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}#}
+{##}
+{#		{% endif %}#}
+
+{% endblock %}
+

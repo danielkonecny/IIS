@@ -47,6 +47,7 @@
             	<input class="square red" type="submit" value="Delete tournament">
         	</form>
         	<a class = "button red" href="{% url 'forms:edit_tournament' tournament.id %}">Edit tournament</a>
+            <a class = "button" href="{% url 'tournaments:start_tournament' tournament.id %}">Start tournament</a>
         </div>
         {% endif %}
 
