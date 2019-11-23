@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Add sponsor{% endblock %}
+
+{% block header %}Add sponsor{% endblock %}
+
+{% block content %}
+  <form method="post" action = "{% url 'forms:create_sponsor' %}">
+    {% csrf_token %}
+    {{edit.as_p}}
+    <button type="submit">Save changes</button>
+  </form>
+{% endblock %}

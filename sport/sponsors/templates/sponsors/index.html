@@ -1,13 +1,58 @@
-{% if front %}
-    <ul>
-    {% for s in front %}
-        <li>
-            <a href = "{% url 'sponsors:single' s.id %}">
-            {{s.name}}
-            </a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Nothing to show.</p>
+{% extends "base.html" %}
+
+{% block title %}
+	Sponsors
+{% endblock %}
+
+{% block header %}
+	List of sponsors
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+	<div class="inner">
+		<a class="button" href ="{% url 'forms:create_sponsor' %}">+ new sponsor</a>
+	</div>
 {% endif %}
+
+	{% if front %}
+    	<ul class="inner">
+    	{% for t in front %}
+        	<li class="item">
+                <p>
+{#            		<a href = "{% url 'tournaments:single' t.id %}">#}
+            		<h2>
+            		{{t.name}}
+            		</h2>
+            		</a>
+            	</p>
+{#            	<p>#}
+{#            		sport: <i>{{t.sport}}</i>#}
+{#            	</p>#}
+{#            	<p>#}
+{#            		entry: <i>{{t.entry}} CZK</i>#}
+{#            	</p>#}
+{#            	<p>#}
+{#            		players: <i>{{t.player_count}}</i>#}
+{#            	</p>#}
+        	</li>
+    	{% endfor %}
+    	</ul>
+
+		<div class="paging">
+        		{% if front.has_previous %}
+            		<a href="?page={{ front.previous_page_number }}">&larr;</a>
+        		{% endif %}
+
+            	{{ front.number }} / {{ front.paginator.num_pages }}
+
+        		{% if front.has_next %}
+            		<a href="?page={{ front.next_page_number }}">&rarr;</a>
+        		{% endif %}
+		</div>
+
+	{% else %}
+    	<p>No sponsors to show.</p>
+	{% endif %}
+{% endblock %}

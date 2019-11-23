@@ -64,7 +64,10 @@ def single(request,id):
 
     if len(aviable_sponsors):
         add_new_sponsor = AddSponsorForm(s=aviable_sponsors) # vytvor formular na pridani tymu do turnaje, az tedka
-        permitted_add_sponsor = True
+        if(user == tournament.poradatele):
+            permitted_add_sponsor = True
+        else:
+            permitted_add_sponsor = False
 
     # vyber vsechny tymy, ve kterych je aktualni user
     his_teams = Team.objects.filter(players__in=[request.user])
@@ -87,6 +90,32 @@ def index(request):
 
 @login_required
 def your_tournaments(request):
-    user = get_object_or_404(User,pk=request.user.id)
-    front = Tournament.objects.filter(poradatele=user)
-    return render(request, 'tournaments/index.html', {'front':front})
+
+    user = get_object_or_404(User, pk=request.user.id)
+    tournaments = Tournament.objects.all()
+    users_tournaments = []
+    # select all teams where user is as a player
+    for tour in tournaments:
+        teams = tour.teams.all()
+        for t in teams:
+            players = t.players.all()
+            for p in players:
+                if p == user:
+                    users_tournaments.append(tour)
+
+    # select all teams where user is manager
+    manage_tournaments = Tournament.objects.filter(poradatele=user)
+
+    # merge arrays
+    for t in manage_tournaments:
+        users_tournaments.append(t)
+
+    # unique array
+    front_set = set(users_tournaments)
+    front = list(front_set)
+
+    paginator = Paginator(front, 10)
+    page = request.GET.get('page')
+    content = paginator.get_page(page)
+    # front = Team.objects.filter(Q(managers=user), Q(players__in=[user]))  # vem tymy kde to ridi nebo v nich hraje
+    return render(request, 'tournaments/index.html', {'front':content})

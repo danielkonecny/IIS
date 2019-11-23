@@ -52,7 +52,7 @@
 
         <h2 class="title">Sponsors ({{sponsors|length}})</h2>
 
-{#        {% if user.is_authenticated and permitted_add_sponsor == True %}#}
+        {% if user.is_authenticated and permitted_add_sponsor == True %}
 			<p>
 				<form method="post" action="{% url 'tournaments:single' tournament.id %}">
 				{% csrf_token %}
@@ -60,7 +60,7 @@
             	<input class="square" type="submit" value="Add sponsor">
 				</form>
 			</p>
-{#		{% endif %}#}
+		{% endif %}
         
 		{% if sponsors %}
 		<h2 class="title">Brought to you by:</h2>
@@ -89,12 +89,12 @@
 		</table>
 		{% endif %}	
 
-		<h2 class="title">Rozhodci ({{rozhodci|length}})</h2>
+		<h2 class="title">Referee ({{rozhodci|length}})</h2>
 		{% if user.is_authenticated and permitted == True and user not in rozhodci %}
     		<p>
     		<form action="{% url 'forms:request_add_rozhodci' tournament.id user.id %}" method="POST">
         		{% csrf_token %}
-        		<input class="square" type="submit" value="I wanna be rozhodci">
+        		<input class="square" type="submit" value="I wanna be referee">
     		</form>
     		</p>
 		{% endif %}
@@ -108,7 +108,7 @@
 			<td>
         		<form action="{% url 'forms:remove_rozhodci' tournament.id r.id %}" method="POST">
             		{% csrf_token %}
-            		<input class="square" type="submit" value="Remove rozhodci">
+            		<input class="square" type="submit" value="Remove referee">
         		</form>
 			</td>
 			{% endif %}	
@@ -116,7 +116,7 @@
 		{% endfor %}	
 		</table>
 		{% else %}
-    		<p>No rozhodci registered.</p>
+    		<p>No referee registered.</p>
 		{% endif %}	
 
 

@@ -10,8 +10,14 @@
 
 {% block content %}
 
+    <h2 class = "title">User</h2>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+    <p>First name: {{ user.first_name }}</p>
+    <p>Last name: {{ user.last_name }}</p>
+
     <h2 class = "title">Team join requests</h2>
-    
+
     {% if requests_players %}
         <table class = "detail">
         {% for r in requests_players.all %}

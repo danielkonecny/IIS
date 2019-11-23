@@ -39,6 +39,11 @@ class CreateTournament(ModelForm):
         model = Tournament
         fields = ['id','name','sport','singleplayer','entry','player_count'] # pridani noveho turnaje
 
+class CreateSponsor(ModelForm):
+    class Meta:
+        model = Sponsor
+        fields = ['id', 'name','logo'] # pridani noveho sponsora
+
 class TournamentForm(ModelForm):
     class Meta:
         model = Tournament

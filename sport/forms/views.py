@@ -13,7 +13,8 @@ from .models import SignUpForm
 from func.func import compare
 from django.forms.models import model_to_dict
 
-from .forms import AddTeamForm, TournamentForm, CreateTournament,CreateTeam
+from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor
+
 
 def signup(request):
     if request.method == 'POST':
@@ -28,8 +29,9 @@ def signup(request):
             return redirect('index')
     else:
         form = SignUpForm()
-        
+
     return render(request, 'forms/signup.html', {'form': form})
+
 
 @login_required
 def profile(request):
@@ -37,7 +39,9 @@ def profile(request):
     requests_players = Team.objects.filter(managers=request.user)
     # seznam jeho requestu pokud je poradatel turnaje - na rozhodci a na hrace turnaje
     requests_tournaments = Tournament.objects.filter(poradatele=request.user)
-    return render(request, 'forms/profile.html', {'user': request.user, 'requests_players':requests_players, 'requests_tournaments':requests_tournaments})
+    return render(request, 'forms/profile.html', {'user': request.user, 'requests_players': requests_players,
+                                                  'requests_tournaments': requests_tournaments})
+
 
 # odstran hrace z requestu
 def request_player_remove(request, id, subid):
@@ -45,9 +49,10 @@ def request_player_remove(request, id, subid):
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
         team.requests_users.remove(user)
-        messages.success(request, 'Request removed.')  
+        messages.success(request, 'Request removed.')
     return redirect('forms:profile')
- 
+
+
 # prijmi hrace do tymu    
 def request_player_ok(request, id, subid):
     team = get_object_or_404(Team, pk=id)
@@ -55,17 +60,19 @@ def request_player_ok(request, id, subid):
     if request.method == 'POST':
         team.players.add(user)
         team.requests_users.remove(user)
-        messages.success(request, 'Request accepted.')  
+        messages.success(request, 'Request accepted.')
     return redirect('forms:profile')
 
-#odstran request rozhodciho z turnaje
+
+# odstran request rozhodciho z turnaje
 def request_rozhodci_remove(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
-        tournament.requests_rozhodci.remove(user) 
+        tournament.requests_rozhodci.remove(user)
         messages.success(request, 'Request removed.')
     return redirect('forms:profile')
+
 
 # prijmi rozhodciho na turnaj
 def request_rozhodci_ok(request, id, subid):
@@ -77,6 +84,7 @@ def request_rozhodci_ok(request, id, subid):
         messages.success(request, 'Request accepted.')
     return redirect('forms:profile')
 
+
 # odstran request teamu poradatelem turnaje
 def request_team_remove(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
@@ -86,6 +94,7 @@ def request_team_remove(request, id, subid):
         messages.success(request, 'Request removed.')
     return redirect('forms:profile')
 
+
 # prijeti tymu na turnaj poradatelem
 def request_team_ok(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
@@ -93,8 +102,9 @@ def request_team_ok(request, id, subid):
     if request.method == 'POST':
         tournament.teams.add(team)
         tournament.requests_teams.remove(team)
-        messages.success(request, 'Request accepted.') 
+        messages.success(request, 'Request accepted.')
     return redirect('forms:profile')
+
 
 # tlacitko chci hrat na profilu ciziho teamu
 def request_add_player(request, id_t, id_u):
@@ -111,14 +121,16 @@ def request_add_player(request, id_t, id_u):
             messages.success(request, 'Request sent.')
         return redirect('forms:profile')
 
+
 # tlacitko chci rozhodcovat na profilu ciziho teamu
 def request_add_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
-        tournament.requests_rozhodci.add(user) 
+        tournament.requests_rozhodci.add(user)
         messages.success(request, 'Request sent.')
     return redirect('forms:profile')
+
 
 # tlacitko odstraneni usera z tymu
 def remove_player(request, id, subid):
@@ -127,13 +139,14 @@ def remove_player(request, id, subid):
     if request.method == 'POST':
         team.players.remove(user)
         messages.success(request, 'Player removed.')
-    #     nebudeme mazat tym bez hracu + if not team.players.count nefunguje
-    # if not team.players.count: # nezbyli tam zadny hraci, odstran tym
-    #     team.delete()
-    #     messages.success(request, 'Last player removed and team deleted.')
-    #     return redirect('forms:profile')
-    # else:
+        #     nebudeme mazat tym bez hracu + if not team.players.count nefunguje
+        # if not team.players.count: # nezbyli tam zadny hraci, odstran tym
+        #     team.delete()
+        #     messages.success(request, 'Last player removed and team deleted.')
+        #     return redirect('forms:profile')
+        # else:
         return redirect('teams:single', team.id)
+
 
 # tlacitko odstraneni sponzora z turnaje
 def remove_sponsor(request, id, subid):
@@ -142,66 +155,73 @@ def remove_sponsor(request, id, subid):
     if request.method == 'POST':
         tournament.sponsors.remove(sponsor)
         messages.success(request, 'Sponsor removed.')
-    return redirect('forms:profile')    
+    return redirect('forms:profile')
+
 
 # tlacitko odstraneni rozhodciho z turnaje
 def remove_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     rozhodci = get_object_or_404(User, pk=subid)
-    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit rozhodci
+    if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit rozhodci
         tournament.rozhodci.remove(rozhodci)
         messages.success(request, 'Rozhodci removed.')
-    return redirect('forms:profile')     
+    return redirect('forms:profile')
+
 
 # tlacitko odstraneni teamu z turnaje
 def remove_team(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     team = get_object_or_404(Team, pk=subid)
-    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit team
+    if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit team
         tournament.teams.remove(team)
         messages.success(request, 'Team removed.')
     return redirect('forms:profile')
 
+
 # tlacitko odstraneni turnaje z povrchu tohoto nekvalitniho kodu
 def delete_tournament(request, id):
     tournament = get_object_or_404(Tournament, pk=id)
-    if request.method == 'POST' and not tournament.started: # pri nastartovanem turnaji nejde odstranit team
+    if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit team
         tournament.delete()
         messages.success(request, 'Tournament deleted.')
     return redirect('forms:profile')
 
+
 # tlacitko odstraneni tymu z povrchu tohoto nekvalitniho kodu
 def delete_team(request, id):
     team = get_object_or_404(Team, pk=id)
-    
+
     # vybere turnaje tohohle tymu
     my_tournaments = team.tour_teams.all()
-    
+
     # vyber nastartovane turnaje a zjisti jestli v nejakem hraje tenhle tym
     started_tournaments = Tournament.objects.filter(started=True)
-    
-    if request.method == 'POST' and not compare(started_tournaments, my_tournaments): # zjisti jestli team nefiguruje v rozjetejch turnajich
+
+    if request.method == 'POST' and not compare(started_tournaments,
+                                                my_tournaments):  # zjisti jestli team nefiguruje v rozjetejch turnajich
         team.delete()
         messages.success(request, 'Team deleted.')
     return redirect('forms:profile')
 
-# uprav svuj turnaj    
-def edit_tournament(request, id):  
-    tournament = get_object_or_404(Tournament,pk=id)
-    if request.method == 'POST':  
+
+# uprav svuj turnaj
+def edit_tournament(request, id):
+    tournament = get_object_or_404(Tournament, pk=id)
+    if request.method == 'POST':
         form = TournamentForm(request.POST, instance=tournament)
         if form.is_valid():
             new = form.save(commit=False)
             new.save()
-            return redirect('forms:profile')
             messages.success(request, 'Tournament saved.')
+            return redirect('forms:profile')
     else:
         form = TournamentForm(instance=tournament)
-    return render(request, 'forms/edit_tournament.html', {'edit':form,'tournament':tournament})
+    return render(request, 'forms/edit_tournament.html', {'edit': form, 'tournament': tournament})
+
 
 # vytvor novej turnaj
 def create_tournament(request):
-    if request.method == 'POST':  
+    if request.method == 'POST':
         form = CreateTournament(request.POST)
         if form.is_valid():
             new = form.save(commit=False)
@@ -212,11 +232,12 @@ def create_tournament(request):
 
     else:
         form = CreateTournament()
-    return render(request, 'forms/add_tournament.html', {'edit':form})
+    return render(request, 'forms/add_tournament.html', {'edit': form})
+
 
 # vytvor novej tym. Tym upravit nejde, potreba ho smazat a zalozit dalsi.
 def create_team(request):
-    if request.method == 'POST':  
+    if request.method == 'POST':
         form = CreateTeam(request.POST)
         if form.is_valid():
             new = form.save(commit=False)
@@ -227,4 +248,20 @@ def create_team(request):
 
     else:
         form = CreateTeam()
-    return render(request, 'forms/add_team.html', {'edit':form})
+    return render(request, 'forms/add_team.html', {'edit': form})
+
+
+# vytvor sponsora. Tym upravit nejde, potreba ho smazat a zalozit dalsi.
+def create_sponsor(request):
+    if request.method == 'POST':
+        form = CreateSponsor(request.POST)
+        if form.is_valid():
+            new = form.save(commit=False)
+            # new.managers = request.user
+            new.save()
+            messages.success(request, 'Sponsor created.')
+            return redirect('forms:profile')
+
+    else:
+        form = CreateSponsor()
+    return render(request, 'forms/add_sponsor.html', {'edit': form})
