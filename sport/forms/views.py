@@ -127,8 +127,12 @@ def request_add_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
-        tournament.requests_rozhodci.add(user)
-        messages.success(request, 'Request sent.')
+        if user == tournament.poradatele:
+            tournament.rozhodci.add(user)
+            messages.success(request, 'Referee added.')
+        else:
+            tournament.requests_rozhodci.add(user)
+            messages.success(request, 'Request sent.')
     return redirect('forms:profile')
 
 
