@@ -27,6 +27,7 @@ def single(request,id):
 
     # vyber vsechny tymy ktere user managuje
     managing_teams = Team.objects.filter(managers=request.user)
+    user = request.user
     available_teams = None
     permitted_add_team = False
     permitted_add_sponsor = False
@@ -40,7 +41,10 @@ def single(request,id):
         add_new_team = AddTeamForm(request.POST,t=available_teams)
         if add_new_team.is_valid():
             team = add_new_team.cleaned_data['teams']
-            tournament.requests_teams.add(team)
+            if team.managers == user and tournament.poradatele == user:
+                tournament.teams.add(team)
+            else:
+                tournament.requests_teams.add(team)
         
             return redirect('forms:profile')
 

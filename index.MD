@@ -19,11 +19,11 @@
 ## ZBYTEK
 
 ### VETSI VECI:
-* pridat sponzora do turnaje
+* Kdo bude pridavat sponsory do db? Udelat formular na pridavani?
 * implementovat zapasy, vysledky zapasu, rozlosovani a statistiky
 * trochu si pohrat se vsema sablonama, aby se neopakovaly tak je rozdelit na mensi (viz google "django generic views" nebo tak neco). treba tri sablony pro index uzivatelu, kde by stacila jedina. strankovani do jedne sablony atd.
 ### DROBNOSTI:
-* pokud mu patri tym i turnaj tak pridat automaticky, bez requestu
+* kdo muze pridavat sponzora do turnaje? Jenom majitel?
 * nastavit ze na bezici turnaj se neda registrovat atd.
 * nastavit aby se na plnej turnaj nedaly posilat requesty o registraci
 * turnaj pujde editovat pouze do dokonceni, az se ukonci (tj pocet zapasu bude naplnenej, tak se deaktivuje)
