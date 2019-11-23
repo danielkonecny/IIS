@@ -57,13 +57,13 @@
                         <td><a href="{% url 'users:single' player.id %}">{{ player.username }}</a></td>
                         <td><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
                         <td>
-                            <form action="{% url 'forms:request_referee_ok' r.id player.id %}" method="POST">
+                            <form action="{% url 'forms:request_rozhodci_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
                                 <input class="square" type="submit" value="Accept">
                             </form>
                         </td>
                         <td>
-                            <form action="{% url 'forms:request_referee_remove' r.id player.id %}" method="POST">
+                            <form action="{% url 'forms:request_rozhodci_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
                                 <input class="square" type="submit" value="Deny">
                             </form>

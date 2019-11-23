@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Player - {{user.first_name}} {{user.last_name}}
+	Player - {{user.last_name}}, {{user.first_name}}
 {% endblock %}
 
 {% block header %}
-	Player > {{user.first_name}} {{user.last_name}}
+	Player > {{user.last_name}}, {{user.first_name}}
 {% endblock %}
 
 {% block content %}

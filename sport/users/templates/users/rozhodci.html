@@ -22,7 +22,7 @@
                         </a>
                     </p>
                     <p>
-                        {% if p.tour_referees %}
+                        {% if p.tour_rozhodci %}
                             rozhodcuje:
                             {% for t in p.tour_rozhodci.all %}
                                 <a href="{% url 'tournaments:single' t.id %}"><i>{{ t.name }}</i></a>&nbsp;/

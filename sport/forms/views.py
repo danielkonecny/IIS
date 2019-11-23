@@ -1,6 +1,8 @@
+from django.shortcuts import render, get_object_or_404
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -9,8 +11,9 @@ from tournaments.models import Tournament
 from sponsors.models import Sponsor
 from .models import SignUpForm
 from func.func import compare
+from django.forms.models import model_to_dict
 
-from .forms import TournamentForm, CreateTournament, CreateTeam, CreateSponsor
+from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor
 
 
 def signup(request):
@@ -62,7 +65,7 @@ def request_player_ok(request, id, subid):
 
 
 # odstran request rozhodciho z turnaje
-def request_referee_remove(request, id, subid):
+def request_rozhodci_remove(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
@@ -72,7 +75,7 @@ def request_referee_remove(request, id, subid):
 
 
 # prijmi rozhodciho na turnaj
-def request_referee_ok(request, id, subid):
+def request_rozhodci_ok(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
@@ -120,7 +123,7 @@ def request_add_player(request, id_t, id_u):
 
 
 # tlacitko chci rozhodcovat na profilu ciziho teamu
-def request_add_referee(request, id, subid):
+def request_add_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
@@ -160,12 +163,12 @@ def remove_sponsor(request, id, subid):
 
 
 # tlacitko odstraneni rozhodciho z turnaje
-def remove_referee(request, id, subid):
+def remove_rozhodci(request, id, subid):
     tournament = get_object_or_404(Tournament, pk=id)
     rozhodci = get_object_or_404(User, pk=subid)
     if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit rozhodci
         tournament.rozhodci.remove(rozhodci)
-        messages.success(request, 'Referee removed.')
+        messages.success(request, 'Rozhodci removed.')
     return redirect('forms:profile')
 
 

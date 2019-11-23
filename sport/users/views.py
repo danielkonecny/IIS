@@ -5,64 +5,61 @@ from django.core.paginator import Paginator
 from teams.models import Team
 from tournaments.models import Tournament
 
+def single(request,id):
 
-def single(request, id):
-    user = get_object_or_404(User, pk=id)
+    user = get_object_or_404(User,pk=id)     
     teams = user.team_teams.all()
 
-    return render(request, 'users/single.html', {'user': user, 'teams': teams})
-
+    return render(request, 'users/single.html', {'user': user,'teams':teams})
 
 def players(request):
     # players = get_user_model().objects.filter(team_teams=True)
     teams = Team.objects.all()
-    players_arr = []
+    players = []
     for t in teams:
         team_players = t.players.all()
         for p in team_players:
-            players_arr.append(p)
+            players.append(p)
 
-    unique = set(players_arr)
+    unique = set(players)
     front = list(unique)
 
     paginator = Paginator(front, 10)
-    page = request.GET.get('page')
+    page = request.GET.get('page')  
     content = paginator.get_page(page)
-    return render(request, 'users/players.html', {'players': content})
+    return render(request, 'users/players.html', {'players':content})
 
-
-def managers(request):
+def managers(request):    
     # players = get_user_model().objects.filter(team_managers=True)
     teams = Team.objects.all()
-    managers_arr = []
+    managers = []
     for t in teams:
         team_players = t.players.all()
         for p in team_players:
-            managers_arr.append(p)
+            managers.append(p)
 
-    unique = set(managers_arr)
+    unique = set(managers)
     front = list(unique)
 
     paginator = Paginator(front, 10)
-    page = request.GET.get('page')
+    page = request.GET.get('page')  
     content = paginator.get_page(page)
-    return render(request, 'users/managers.html', {'players': content})
-
-
-def referees(request):
-    # players = get_user_model().objects.filter(tour_referees=True)
+    return render(request, 'users/managers.html', {'players':content})
+    
+def rozhodci(request):
+    # players = get_user_model().objects.filter(tour_rozhodci=True)
 
     tournaments = Tournament.objects.all()
-    referees_arr = []
+    referees = []
     for t in tournaments:
         tournament_referees = t.rozhodci.all()
         for r in tournament_referees:
-            referees_arr.append(r)
+            referees.append(r)
 
-    unique = set(referees_arr)
+    unique = set(referees)
     front = list(unique)
 
     paginator = Paginator(front, 10)
-    page = request.GET.get('page')
+    page = request.GET.get('page')  
     content = paginator.get_page(page)
-    return render(request, 'users/referees.html', {'players': content})
+    return render(request, 'users/rozhodci.html', {'players':content})
