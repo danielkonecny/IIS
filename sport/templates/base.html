@@ -3,77 +3,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script> 
-    <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css" />
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
     <title>{% block title %}sportBET 1.0{% endblock %}</title>
 
 </head>
 
 <body>
 
-	<div id = "container">
+<div id="container">
 
-	<header>
-	<div class="block">
-	<h1>
-	{% block header %}
-	SportBET 1.0
-	{% endblock %}
-	</h1>
-	</div>
-	</header>
+    <header>
+        <div class="block">
+            <h1>
+                {% block header %}
+                    SportBET 1.0
+                {% endblock %}
+            </h1>
+        </div>
+    </header>
 
     <div id="sidebar">
-    	<div class="block">
-        	{% block sidebar %}
-        	<ul>
-        		<li><strong><a href="/">Homepage</a></strong></li>
-				<li><a href="{% url 'tournaments:index' %}">Tournaments</a></li>
-				<li><a href="{% url 'teams:index' %}">Teams</a></li>
-                <li><a href="{% url 'sponsors:index' %}">Sponsors</a></li>
-				
-        		<li class="green">Users</li>
-        		<ul class="lpad">
-        			<li><a href="{% url 'users:players' %}">Players</a>
-        			<li><a href="{% url 'users:managers' %}">Managers</a>
-        			<li><a href="{% url 'users:rozhodci' %}">Rozhodci</a>
-        		</ul>
+        <div class="block">
+            {% block sidebar %}
+                <ul>
+                    <li><strong><a href="/">Homepage</a></strong></li>
+                    <li><a href="{% url 'tournaments:index' %}">Tournaments</a></li>
+                    <li><a href="{% url 'teams:index' %}">Teams</a></li>
+                    <li><a href="{% url 'sponsors:index' %}">Sponsors</a></li>
 
-        		<li class="green">Administration</li>
-        		<ul class="lpad">            		
-            		<li><a href="/admin/">Admin</a></li>
-            	{% if user.is_authenticated %}
-            		<li><a href="{% url 'teams:your_teams' %}">Your teams</a></li>
-            		<li><a href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a></li>
-            		<li><a href="{% url 'forms:profile' %}">Profile</a>
-            		<li><a href="{% url 'logout' %}">Logout</a></li>
-            	{% else %}
-            		<li><a href="{% url 'forms:signup' %}">Register</a></li>
-            		<li><a href="{% url 'login' %}">Login</a></li>
-            	{% endif %}
-        		</ul>
+                    <li class="green">Users</li>
+                    <ul class="lpad">
+                        <li><a href="{% url 'users:players' %}">Players</a>
+                        <li><a href="{% url 'users:managers' %}">Managers</a>
+                        <li><a href="{% url 'users:referees' %}">Referees</a>
+                    </ul>
 
-            	
-        	</ul>
-        	{% endblock %}
-       	</div>
-    	</div>
+                    <li class="green">Administration</li>
+                    <ul class="lpad">
+                        <li><a href="/admin/">Admin</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'teams:your_teams' %}">Your teams</a></li>
+                            <li><a href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a></li>
+                            <li><a href="{% url 'forms:profile' %}">Profile</a>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{% url 'forms:signup' %}">Register</a></li>
+                            <li><a href="{% url 'login' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
 
-    	<div id="content">
-    		<div id="inner-content">
-  						{% if messages %}
-							<ul class="messages">
-    							{% for message in messages %}
-    							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    							{% endfor %}
-							</ul>
-						{% endif %}
-    				
-        			{% block content %}{% endblock %}
-        			
-        	</div>
-    	</div>
+
+                </ul>
+            {% endblock %}
+        </div>
+    </div>
+
+    <div id="content">
+        <div id="inner-content">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </div>
 </div>
 </body>
 </html>

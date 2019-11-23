@@ -6,7 +6,5 @@ app_name = 'sports'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('<int:id>/',views.single,name='single'),
-    
+    path('<int:id>/', views.single, name='single'),
 ]
-
