@@ -80,7 +80,7 @@ def request_rozhodci_ok(request, id, subid):
     user = get_object_or_404(User, pk=subid)
     if request.method == 'POST':
         tournament.rozhodci.add(user)
-        team.requests_rozhodci.remove(user)
+        tournament.requests_rozhodci.remove(user)
         messages.success(request, 'Request accepted.')
     return redirect('forms:profile')
 
