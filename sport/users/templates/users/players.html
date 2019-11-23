@@ -1,53 +1,52 @@
 {% extends "base.html" %}
 
 {% block title %}
-	List of players
+    List of players
 {% endblock %}
 
 {% block header %}
-	List of players
+    List of players
 {% endblock %}
 
 {% block content %}
 
-	{% if players %}
-    	<ul class="inner">
-    	{% for p in players %}
-        	<li class="item">
-                <p>
-            		<a href = "{% url 'users:single' p.id %}">
-            		<h2>
-            		{{p.last_name}}, {{p.first_name}}
-            		</h2>
-            		</a>
-            	</p>
-            	<p>
-            		{% if p.team_teams %}
-            		plays in:
-            		{% for t in p.team_teams.all %}
-            		<i><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></i>&nbsp;&nbsp;/&nbsp;&nbsp;
-            		{% endfor %}
-            		{% endif %}
-            		
-            	</p>
-        	</li>
-    	{% endfor %}
-    	</ul>
-    	
-		<div class="paging">
-        		{% if players.has_previous %}
-            		<a href="?page={{ players.previous_page_number }}">&larr;</a>
-        		{% endif %}
-		
-            	{{ players.number }} / {{ players.paginator.num_pages }}
-		
-        		{% if players.has_next %}
-            		<a href="?page={{ players.next_page_number }}">&rarr;</a>
-        		{% endif %}
-		</div>
-    	
-	{% else %}
-    	<p>No players to show.</p>
-	{% endif %}
+    {% if players %}
+        <ul class="inner">
+            {% for p in players %}
+                <li class="item">
+                    <p>
+                        <a href="{% url 'users:single' p.id %}">
+                            <h2>
+                                {{ p.first_name }} {{ p.last_name }}
+                            </h2>
+                        </a>
+                    </p>
+                    <p>
+                        {% if p.team_teams %}
+                            plays in:
+                            {% for t in p.team_teams.all %}
+                                <i><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></i>&nbsp;/
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="paging">
+            {% if players.has_previous %}
+                <a href="?page={{ players.previous_page_number }}">&larr;</a>
+            {% endif %}
+
+            {{ players.number }} / {{ players.paginator.num_pages }}
+
+            {% if players.has_next %}
+                <a href="?page={{ players.next_page_number }}">&rarr;</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p>No players to show.</p>
+    {% endif %}
 {% endblock %}
 
