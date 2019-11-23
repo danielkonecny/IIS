@@ -28,13 +28,13 @@
                         <td>
                             <form action="{% url 'forms:request_player_ok' r.id request.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Ok">
+                                <input class="square" type="submit" value="Accept">
                             </form>
                         </td>
                         <td>
                             <form action="{% url 'forms:request_player_remove' r.id request.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Fuck you">
+                                <input class="square" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>
@@ -59,13 +59,13 @@
                         <td>
                             <form action="{% url 'forms:request_rozhodci_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Ok">
+                                <input class="square" type="submit" value="Accept">
                             </form>
                         </td>
                         <td>
                             <form action="{% url 'forms:request_rozhodci_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Fuck you">
+                                <input class="square" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>
@@ -90,13 +90,13 @@
                         <td>
                             <form action="{% url 'forms:request_team_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Ok">
+                                <input class="square" type="submit" value="Accept">
                             </form>
                         </td>
                         <td>
                             <form action="{% url 'forms:request_team_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Fuck you">
+                                <input class="square" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>

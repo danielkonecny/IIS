@@ -25,8 +25,6 @@
 * nastavit ze na bezici turnaj se neda registrovat atd.
 * nastavit aby se na plnej turnaj nedaly posilat requesty o registraci
 * turnaj pujde editovat pouze do dokonceni, az se ukonci (tj pocet zapasu bude naplnenej, tak se deaktivuje)
-* nekde v sablonach je potreba prohodit uzivatelska jmena za skutecna, nechtelo se mi to vyplnovat
-* nastavit ulozeni first name a last name jako povinne u uzivatele ve formulari
 * v sablone profile.html dat aby se nevypisovala tabulka kdyz nic neni v .all
 * team by mel jit editovat stejne jako turnaj, mozna s max poctem hracu?
 * po operacich s formularem skacu na forms:profile, skakat jinam
