@@ -12,6 +12,7 @@ from sponsors.models import Sponsor
 from .models import SignUpForm
 from func.func import compare
 from django.forms.models import model_to_dict
+from tournaments.views import single
 
 from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor
 
@@ -159,7 +160,7 @@ def remove_sponsor(request, id, subid):
     if request.method == 'POST':
         tournament.sponsors.remove(sponsor)
         messages.success(request, 'Sponsor removed.')
-    return redirect('forms:profile')
+    return single(request, id)
 
 
 # tlacitko odstraneni rozhodciho z turnaje
@@ -169,7 +170,7 @@ def remove_rozhodci(request, id, subid):
     if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit rozhodci
         tournament.rozhodci.remove(rozhodci)
         messages.success(request, 'Rozhodci removed.')
-    return redirect('forms:profile')
+    return single(request, id)
 
 
 # tlacitko odstraneni teamu z turnaje
@@ -179,7 +180,7 @@ def remove_team(request, id, subid):
     if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit team
         tournament.teams.remove(team)
         messages.success(request, 'Team removed.')
-    return redirect('forms:profile')
+    return single(request, id)
 
 
 # tlacitko odstraneni turnaje z povrchu tohoto nekvalitniho kodu

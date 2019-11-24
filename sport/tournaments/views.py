@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Tournament
 from teams.models import Team
 from sponsors.models import Sponsor
+from matches.models import Match
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -12,8 +13,6 @@ from forms.forms import AddTeamForm
 from forms.forms import AddSponsorForm
 
 from django.contrib import messages
-
-from django.db.models.functions import Log
 
 
 def single(request, id):
@@ -50,7 +49,7 @@ def single(request, id):
             else:
                 tournament.requests_teams.add(team)
 
-            return redirect('forms:profile')
+            return single(request, id)
 
     # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
     if request.method == 'POST':
@@ -59,7 +58,7 @@ def single(request, id):
             sponsors = add_new_sponsor.cleaned_data['sponsors']
             tournament.sponsors.add(sponsors)
 
-            return redirect('forms:profile')
+            return single(request, id)
 
     if len(available_teams):
         add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
@@ -127,24 +126,45 @@ def your_tournaments(request):
 
 
 def start_tournament(request, id):
-    # FIXME sprav to pico
     tournament = get_object_or_404(Tournament, pk=id)
     teams = tournament.teams.all()
     player_count = teams.count()
+
+    index = 1
+
     if teams.count() < 2:
         messages.warning(request, 'Wrong team count: ' + str(teams.count()) + '.')
-        return render(request, 'tournaments/index.html', {'tournament': tournament})
+        return single(request, id)
     else:
         while player_count > 1:
             if player_count % 2 != 0:
                 messages.warning(request, 'Wrong number of teams. Must be power of two. ')
                 return single(request, id)
+            index += 1
             player_count /= 2
 
     for t in teams:
         players = t.players.all()
         if players.count() != tournament.player_count:
-            messages.warning(request, 'Wrong player count in team ' + t.name + ' .')
-            return render(request, 'tournaments/index.html', {'tournament': tournament})
+            messages.warning(request,
+                             'Wrong player count in team ' + t.name + ' - ' + str(players.count()) + ' players.')
+            return single(request, id)
 
-    return render(request, 'tournaments/match_schedule.html', {'tournament': tournament})
+    new_matches(None, index, tournament)
+
+    matches = Match.objects.filter(turnaj=tournament)
+
+    return render(request, 'tournaments/match_schedule.html', {'tournament': tournament, 'matches': matches})
+
+
+def new_matches(match, index, tournament):
+    new_match = Match()
+    if match:
+        new_match.nextMatch = match
+        new_match.startPosition = index
+    new_match.turnaj = tournament
+    index -= 1
+    new_match.save()
+    if index > 0:
+        new_matches(new_match, index, tournament)
+        new_matches(new_match, index, tournament)

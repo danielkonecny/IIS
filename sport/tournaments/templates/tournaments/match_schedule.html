@@ -1,21 +1,28 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Tournament - {{tournament.name}}
+    Tournament - {{ tournament.name }}
 {% endblock %}
 
 {% block header %}
-	Tournaments > {{tournament.name}}
+    Tournaments > {{ tournament.name }}
 {% endblock %}
 
 {% block content %}
 
-	<h2 class = "title">{{tournament.name}}</h2>
-    
+    <h2 class="title">{{ tournament.name }}</h2>
 
-{#		{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}#}
-{##}
-{#		{% endif %}#}
+    <p>{{ default.name }}</p>
+
+{#    {% if matches %}#}
+{#        {% for m in matches %}#}
+{#            <p>{{ m.start_position }}</p>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+
+    {#		{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}#}
+    {##}
+    {#		{% endif %}#}
 
 {% endblock %}
 

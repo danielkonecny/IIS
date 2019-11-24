@@ -3,77 +3,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script> 
-    <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css" />
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
-    <title>{% block title %}sportBET 1.0{% endblock %}</title>
-
+    <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
+    <title>IIS Project - Sport</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.css">
 </head>
 
 <body>
+<div id="container">
+    {% block sidebar %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <a class="navbar-brand active" href="#" style="padding-right: 10%"><strong>IIS Project - Sport</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-	<div id = "container">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/" style="font-size: x-large;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tournaments:index' %}">Tournaments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'teams:index' %}">Teams</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'sponsors:index' %}">Sponsors</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Users
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'users:players' %}">Players</a>
+                        <a class="dropdown-item" href="{% url 'users:managers' %}">Managers</a>
+                        <a class="dropdown-item" href="{% url 'users:rozhodci' %}">Referees</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'teams:your_teams' %}">Your teams</a>
+                        <a class="dropdown-item" href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a>
+                        <a class="dropdown-item" href="{% url 'forms:profile' %}">Profile</a>
+                        {% endif %}
+                    </div>
+                </li>
+                {% if request.user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Administration</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'forms:signup' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    {% endblock %}
 
-	<header>
-	<div class="block">
-	<h1>
-	{% block header %}
-	SportBET 1.0
-	{% endblock %}
-	</h1>
-	</div>
-	</header>
+    <div id="content">
+        <div id="inner-content">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li
+                        {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
 
-    <div id="sidebar">
-    	<div class="block">
-        	{% block sidebar %}
-        	<ul>
-        		<li><strong><a href="/">Homepage</a></strong></li>
-				<li><a href="{% url 'tournaments:index' %}">Tournaments</a></li>
-				<li><a href="{% url 'teams:index' %}">Teams</a></li>
-                <li><a href="{% url 'sponsors:index' %}">Sponsors</a></li>
-				
-        		<li class="green">Users</li>
-        		<ul class="lpad">
-        			<li><a href="{% url 'users:players' %}">Players</a>
-        			<li><a href="{% url 'users:managers' %}">Managers</a>
-        			<li><a href="{% url 'users:rozhodci' %}">Rozhodci</a>
-        		</ul>
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 
-        		<li class="green">Administration</li>
-        		<ul class="lpad">            		
-            		<li><a href="/admin/">Admin</a></li>
-            	{% if user.is_authenticated %}
-            		<li><a href="{% url 'teams:your_teams' %}">Your teams</a></li>
-            		<li><a href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a></li>
-            		<li><a href="{% url 'forms:profile' %}">Profile</a>
-            		<li><a href="{% url 'logout' %}">Logout</a></li>
-            	{% else %}
-            		<li><a href="{% url 'forms:signup' %}">Register</a></li>
-            		<li><a href="{% url 'login' %}">Login</a></li>
-            	{% endif %}
-        		</ul>
-
-            	
-        	</ul>
-        	{% endblock %}
-       	</div>
-    	</div>
-
-    	<div id="content">
-    		<div id="inner-content">
-  						{% if messages %}
-							<ul class="messages">
-    							{% for message in messages %}
-    							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    							{% endfor %}
-							</ul>
-						{% endif %}
-    				
-        			{% block content %}{% endblock %}
-        			
-        	</div>
-    	</div>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
