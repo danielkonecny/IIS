@@ -32,5 +32,7 @@ urlpatterns = [
     re_path(r'^create_tournament$', views.create_tournament, name='create_tournament'),
     re_path(r'^create_team$', views.create_team, name='create_team'),
     re_path(r'^create_sponsor$', views.create_sponsor, name='create_sponsor'),
+
+    re_path(r'^add_match_results(?P<id>\w+)/$', views.add_match_results, name='add_match_results'),
 ]
 

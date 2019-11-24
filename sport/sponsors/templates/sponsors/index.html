@@ -12,7 +12,7 @@
 
 {% if user.is_authenticated %}
 	<div class="inner">
-		<a class="button" href ="{% url 'forms:create_sponsor' %}">+ new sponsor</a>
+		<a href ="{% url 'forms:create_sponsor' %}"><button class="btn btn-primary" style="margin: 2%">New sponsor</button></a>
 	</div>
 {% endif %}
 

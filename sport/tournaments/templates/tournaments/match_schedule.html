@@ -12,17 +12,69 @@
 
     <h2 class="title">{{ tournament.name }}</h2>
 
-    {% if debug %}
-        {% for d in debug %}
-{#            <p>{{ m.name }}</p>#}
-            <p>{{d}}</p>
-        {% endfor %}
-    {% endif %}
+    {% if layers %}
+        {% for l in layers %}
+            <h2 style="margin-top: 40px">Round number: {{ l }}</h2>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Team A</th>
+                    <th>Score A</th>
+                    <th>Team B</th>
+                    <th>Score A</th>
+                    <th>Result</th>
+                    <th>Add result</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for m in matches %}
+                    {% if m.start_position == l %}
+                        {% if m.team_A != None and m.team_B != None %}
+                            <tr>
+                                {% if m.team_A != None %}
+                                    <td>
+                                        {{ m.team_A }}
+                                    </td>
+                                    <td>
+                                        {{ m.score_A }}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
 
-    {% if matches %}
-        {% for m in matches %}
-{#            <p>{{ m.name }}</p>#}
-            <p>Je tu</p>
+                                {% if m.team_B != None %}
+                                    <td>
+                                        {{ m.team_B }}
+                                    </td>
+                                    <td>
+                                        {{ m.score_B }}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                    <td></td>
+                                {% endif %}
+
+                                {% if m.team_B != None  and m.team_A != None %}
+                                    <td>
+                                        {{ m.score_A }} / {{ m.score_B }}
+                                    </td>
+                                {% else %}
+                                    <td></td>
+                                {% endif %}
+                                <td>
+                                    <a href="{% url 'forms:add_match_results' m.id %}">
+                                        <button class="btn btn-primary"
+                                                style="flex-shrink: 0; margin: 1%; height: max-content">Add results
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
         {% endfor %}
     {% endif %}
 

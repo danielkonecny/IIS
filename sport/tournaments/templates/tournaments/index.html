@@ -12,7 +12,7 @@
 
 {% if user.is_authenticated %}
 	<div class="inner">
-		<a class="button" href ="{% url 'forms:create_tournament' %}">+ new tournament</a>
+        <a href ="{% url 'forms:create_tournament' %}"><button class="btn btn-primary" style="margin: 2%">New tournament</button></a>
 	</div>
 {% endif %}
 

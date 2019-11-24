@@ -9,12 +9,13 @@ from django.contrib import messages
 from teams.models import Team
 from tournaments.models import Tournament
 from sponsors.models import Sponsor
+from matches.models import Match
 from .models import SignUpForm
 from func.func import compare
 from django.forms.models import model_to_dict
-from tournaments.views import single
+from tournaments.views import single, start_tournament
 
-from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor
+from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor, AddMatchResultsForm
 
 
 def signup(request):
@@ -115,12 +116,11 @@ def request_add_player(request, id_t, id_u):
         if request.method == 'POST':
             team.players.add(user)
             messages.success(request, 'Player added.')
-        return redirect('teams:single', team.id)
     else:
         if request.method == 'POST':
             team.requests_users.add(user)
             messages.success(request, 'Request sent.')
-        return redirect('forms:profile')
+    return redirect('teams:single', team.id)
 
 
 # tlacitko chci rozhodcovat na profilu ciziho teamu
@@ -134,7 +134,7 @@ def request_add_rozhodci(request, id, subid):
         else:
             tournament.requests_rozhodci.add(user)
             messages.success(request, 'Request sent.')
-    return redirect('forms:profile')
+    return redirect('tournaments:single', id)
 
 
 # tlacitko odstraneni usera z tymu
@@ -150,7 +150,7 @@ def remove_player(request, id, subid):
         #     messages.success(request, 'Last player removed and team deleted.')
         #     return redirect('forms:profile')
         # else:
-        return redirect('teams:single', team.id)
+    return redirect('teams:single', team.id)
 
 
 # tlacitko odstraneni sponzora z turnaje
@@ -189,7 +189,7 @@ def delete_tournament(request, id):
     if request.method == 'POST' and not tournament.started:  # pri nastartovanem turnaji nejde odstranit team
         tournament.delete()
         messages.success(request, 'Tournament deleted.')
-    return redirect('forms:profile')
+    return redirect('tournaments:index')
 
 
 # tlacitko odstraneni tymu z povrchu tohoto nekvalitniho kodu
@@ -206,7 +206,7 @@ def delete_team(request, id):
                                                 my_tournaments):  # zjisti jestli team nefiguruje v rozjetejch turnajich
         team.delete()
         messages.success(request, 'Team deleted.')
-    return redirect('forms:profile')
+    return redirect('teams:index')
 
 
 # uprav svuj turnaj
@@ -233,7 +233,7 @@ def create_tournament(request):
             new.poradatele = request.user
             new.save()
             messages.success(request, 'Tournament created.')
-            return redirect('forms:profile')
+            return redirect('tournaments:index')
 
     else:
         form = CreateTournament()
@@ -249,7 +249,7 @@ def create_team(request):
             new.managers = request.user
             new.save()
             messages.success(request, 'Team created.')
-            return redirect('forms:profile')
+            return redirect('teams:index')
 
     else:
         form = CreateTeam()
@@ -265,8 +265,45 @@ def create_sponsor(request):
             # new.managers = request.user
             new.save()
             messages.success(request, 'Sponsor created.')
-            return redirect('forms:profile')
+            return redirect('sponsors:index')
 
     else:
         form = CreateSponsor()
     return render(request, 'forms/add_sponsor.html', {'edit': form})
+
+
+# uprav vysledky zapasu
+def add_match_results(request, id):
+    match = get_object_or_404(Match, pk=id)
+    tournament_id = match.turnaj.id
+    if request.method == 'POST':
+        form = AddMatchResultsForm(request.POST, instance=match)
+        if form.is_valid():
+            new = form.save(commit=False)
+
+            next_match = match.next_match
+
+            winner = None
+            if match.score_A == match.score_B:
+                messages.warning(request, 'Teams cannot have same score.')
+                return start_tournament(request, tournament_id)
+
+            new.save()
+            if match.score_A > match.score_B:
+                winner = match.team_A
+            else:
+                winner = match.team_B
+
+            if next_match:
+                if next_match.team_A is None:
+                    next_match.team_A = winner
+                else:
+                    next_match.team_B = winner
+
+                next_match.save()
+
+            messages.success(request, 'Match results saved.')
+            return start_tournament(request, tournament_id)
+    else:
+        form = AddMatchResultsForm(instance=match)
+    return render(request, 'forms/add_match_results.html', {'edit': form, 'match': match})

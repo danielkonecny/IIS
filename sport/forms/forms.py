@@ -3,6 +3,7 @@ from teams.models import Team
 from django.forms import ModelForm
 from tournaments.models import Tournament
 from sponsors.models import Sponsor
+from matches.models import Match
 
 
 # formular pridani teamu do turnaje
@@ -54,3 +55,9 @@ class TournamentForm(ModelForm):
     class Meta:
         model = Tournament
         fields = ['name', 'entry', 'player_count']  # edit turnaje
+
+
+class AddMatchResultsForm(ModelForm):
+    class Meta:
+        model = Match
+        fields = ['score_A', 'score_B']  # pridani vysleldku zapasu

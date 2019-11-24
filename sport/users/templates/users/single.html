@@ -1,31 +1,87 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Player - {{user.last_name}}, {{user.first_name}}
+    Player - {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
 
 {% block header %}
-	Player > {{user.last_name}}, {{user.first_name}}
+    Player > {{ user.first_name }} {{ user.last_name }}
 {% endblock %}
 
 {% block content %}
 
-    <h2 class = "title">Hosting in teams ({{teams|length}})</h2>
-    
-		{% if teams %}
-		<table class = "detail">
-    	{% for t in teams %}
-			<tr>
-			<td><a href="{% url 'teams:single' t.id %}">{{t.name}}</a></td>
-			{% if t.flag %}
-			<td><img src="{{t.flag.url}}" width = "100" /></td>
-			{% endif %}
-			</tr>
-		{% endfor %}	
-		</table>
-		{% else %}
-    		<p>No teams.</p>
-		{% endif %}	
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+
+    <h2 class="title">Playing in teams ({{ user.team_teams.all|length }})</h2>
+
+    {% if user.team_teams %}
+        <table class="detail">
+            {% for t in user.team_teams.all %}
+                <tr>
+                    <td><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></td>
+                    {% if t.flag %}
+                        <td><img src="{{ t.flag.url }}" width="100"/></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No teams.</p>
+    {% endif %}
+
+    <h2 class="title">Refereeing tournaments ({{ user.tour_rozhodci.all|length }})</h2>
+
+    {% if user.tour_rozhodci %}
+        <table class="detail">
+            {% for t in user.tour_rozhodci.all %}
+                <tr>
+                    <td><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></td>
+                    {% if t.flag %}
+                        <td><img src="{{ t.flag.url }}" width="100"/></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No teams.</p>
+    {% endif %}
+
+    <h2 class="title">Managing teams ({{ user.team_managers.all|length }})</h2>
+
+    {% if user.team_managers %}
+        <table class="detail">
+            {% for t in user.team_managers.all %}
+                <tr>
+                    <td><a href="{% url 'tournaments:single' t.id %}">{{ t.name }}</a></td>
+                    {% if t.flag %}
+                        <td><img src="{{ t.flag.url }}" width="100"/></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No teams.</p>
+    {% endif %}
+
+    <h2 class="title">Managing tournaments ({{ user.tour_poradatele.all|length }})</h2>
+
+    {% if user.tour_poradatele %}
+        <table class="detail">
+            {% for t in user.tour_poradatele.all %}
+                <tr>
+                    <td><a href="{% url 'tournaments:single' t.id %}">{{ t.name }}</a></td>
+                    {% if t.flag %}
+                        <td><img src="{{ t.flag.url }}" width="100"/></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No teams.</p>
+    {% endif %}
+
+
+
 
 {% endblock %}
 

@@ -23,18 +23,18 @@
 
                 {% for request in r.requests_users.all %}
                     <tr>
-                        <td><a href="{% url 'users:single' request.id %}">{{ request.username }}</a></td>
-                        <td><a href="{% url 'teams:single' r.id %}">{{ r.name }}</a></td>
-                        <td>
+                        <td width="25%"><a href="{% url 'users:single' request.id %}">{{ request.username }}</a></td>
+                        <td width="25%"><a href="{% url 'teams:single' r.id %}">{{ r.name }}</a></td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_player_ok' r.id request.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Accept">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
                             </form>
                         </td>
-                        <td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_player_remove' r.id request.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Deny">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>
@@ -54,18 +54,18 @@
 
                 {% for player in r.requests_rozhodci.all %}
                     <tr>
-                        <td><a href="{% url 'users:single' player.id %}">{{ player.username }}</a></td>
-                        <td><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
-                        <td>
+                        <td width="25%"><a href="{% url 'users:single' player.id %}">{{ player.username }}</a></td>
+                        <td width="25%"><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_rozhodci_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Accept">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
                             </form>
                         </td>
-                        <td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_rozhodci_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Deny">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>
@@ -85,18 +85,18 @@
 
                 {% for player in r.requests_teams.all %}
                     <tr>
-                        <td><a href="{% url 'teams:single' player.id %}">{{ player.name }}</a></td>
-                        <td><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
-                        <td>
+                        <td width="25%"><a href="{% url 'teams:single' player.id %}">{{ player.name }}</a></td>
+                        <td width="25%"><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_team_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Accept">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
                             </form>
                         </td>
-                        <td>
+                        <td width="25%">
                             <form action="{% url 'forms:request_team_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="square" type="submit" value="Deny">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
                             </form>
                         </td>
                     </tr>

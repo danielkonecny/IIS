@@ -24,8 +24,8 @@ def single(request, id):
     rozhodci = tournament.rozhodci.all()
     sponsors = tournament.sponsors.all()
 
-    aviable_sponsors = Sponsor.objects.all()
-    aviable_sponsors = aviable_sponsors.exclude(tour_sponsors__in=[tournament])
+    available_sponsors = Sponsor.objects.all()
+    available_sponsors = available_sponsors.exclude(tour_sponsors__in=[tournament])
 
     add_new_team = None  # formular na pridani tymu do turnaje
     add_new_sponsor = None  # formular na pridani tymu do turnaje
@@ -55,23 +55,26 @@ def single(request, id):
 
     # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
     if request.method == 'POST':
-        add_new_sponsor = AddSponsorForm(request.POST, s=aviable_sponsors)
+        add_new_sponsor = AddSponsorForm(request.POST, s=available_sponsors)
         if add_new_sponsor.is_valid():
             sponsors = add_new_sponsor.cleaned_data['sponsors']
             tournament.sponsors.add(sponsors)
 
             return single(request, id)
 
-    if len(available_teams):
-        add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
-        permitted_add_team = True
+    if available_teams:
+        if len(available_teams):
+            add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
+            permitted_add_team = True
 
-    if len(aviable_sponsors):
-        add_new_sponsor = AddSponsorForm(s=aviable_sponsors)  # vytvor formular na pridani tymu do turnaje, az tedka
-        if (user == tournament.poradatele):
-            permitted_add_sponsor = True
-        else:
-            permitted_add_sponsor = False
+    if available_sponsors:
+        if len(available_sponsors):
+            add_new_sponsor = AddSponsorForm(
+                s=available_sponsors)  # vytvor formular na pridani tymu do turnaje, az tedka
+            if (user == tournament.poradatele):
+                permitted_add_sponsor = True
+            else:
+                permitted_add_sponsor = False
 
     # vyber vsechny tymy, ve kterych je aktualni user
     his_teams = Team.objects.filter(players__in=[request.user])
@@ -79,12 +82,15 @@ def single(request, id):
     # zjisti jestli muze byt rozhodcim
     permitted = not compare(his_teams, teams)
 
+    tournament_started = tournament.started
+
     return render(request, 'tournaments/single.html', {'tournament': tournament, 'teams': teams, 'sponsors': sponsors,
                                                        'rozhodci': rozhodci, 'permitted': permitted,
                                                        'permitted_add_team': permitted_add_team,
                                                        'permitted_add_sponsor': permitted_add_sponsor,
                                                        'add_new_team': add_new_team,
-                                                       'add_new_sponsor': add_new_sponsor})
+                                                       'add_new_sponsor': add_new_sponsor,
+                                                       'tournament_started': tournament_started})
 
 
 def index(request):
@@ -132,7 +138,7 @@ def start_tournament(request, id):
     teams = tournament.teams.all()
     player_count = teams.count()
 
-    index = 1
+    index = 0
 
     if teams.count() < 2:
         messages.warning(request, 'Wrong team count: ' + str(teams.count()) + '.')
@@ -152,15 +158,25 @@ def start_tournament(request, id):
                              'Wrong player count in team ' + t.name + ' - ' + str(players.count()) + ' players.')
             return single(request, id)
 
-    new_matches(None, index, tournament)
+    if not tournament.started:
+        new_matches(None, index, tournament)
 
     matches = Match.objects.filter(turnaj=tournament)
     teams = tournament.teams.all()
 
-    fill_matches(matches, teams)
+    if not tournament.started:
+        fill_matches(matches, teams)
+        tournament.started = True
+        tournament.save()
+
+    number_of_layers = index
+    layers = []
+    for i in range(1, number_of_layers + 1):
+        layers.append(i)
+
 
     return render(request, 'tournaments/match_schedule.html',
-                  {'tournament': tournament, 'matches': matches})
+                  {'tournament': tournament, 'matches': matches, 'layers': layers})
 
 
 # recurse function
@@ -168,8 +184,8 @@ def start_tournament(request, id):
 def new_matches(match, index, tournament):
     new_match = Match()
     if match:
-        new_match.nextMatch = match
-        new_match.start_position = index
+        new_match.next_match = match
+    new_match.start_position = index
     new_match.turnaj = tournament
     index -= 1
     new_match.save()
@@ -187,15 +203,19 @@ def fill_matches(matches, teams):
             first_matches_count += 1
 
     draw = []
-    draw = random.sample(range(0, first_matches_count), first_matches_count)
+    draw = random.sample(range(0, first_matches_count * 2), first_matches_count * 2)
     print(draw)
+    print(len(teams))
+    print(len(first_matches))
 
     i = 0
     for d in draw:
-        i = i + 1
         a_b = i % 2
         pos = i // 2
+        i += 1
         if a_b:
             first_matches[pos].team_A = teams[d]
+            first_matches[pos].save()
         else:
             first_matches[pos].team_B = teams[d]
+            first_matches[pos].save()

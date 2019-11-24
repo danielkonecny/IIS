@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block title %}
-    List of managers
+    All users
 {% endblock %}
 
 {% block header %}
-    List of managers
+    All users
 {% endblock %}
 
 {% block content %}
 
-    {% if players %}
+    {% if users %}
         <ul class="inner">
-            {% for p in players %}
+            {% for p in users %}
                 <li class="item">
                     <p>
                         <a href="{% url 'users:single' p.id %}">
@@ -22,9 +22,25 @@
                         </a>
                     </p>
                     <p>
+                        {% if p.tour_rozhodci %}
+                            Referees:
+                            {% for t in p.tour_rozhodci.all %}
+                                <a href="{% url 'tournaments:single' t.id %}"><i>{{ t.name }}</i></a>&nbsp;/
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                    <p>
                         {% if p.team_managers %}
                             Manages:
                             {% for t in p.team_managers.all %}
+                                <i><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></i>&nbsp;/
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                    <p>
+                        {% if p.team_teams %}
+                            Plays in:
+                            {% for t in p.team_teams.all %}
                                 <i><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></i>&nbsp;/
                             {% endfor %}
                         {% endif %}
@@ -38,7 +54,7 @@
                 <a href="?page={{ players.previous_page_number }}">&larr;</a>
             {% endif %}
 
-            {{ players.number }} / {{ players.paginator.num_pages }}
+            {{ users.number }} / {{ users.paginator.num_pages }}
 
             {% if players.has_next %}
                 <a href="?page={{ players.next_page_number }}">&rarr;</a>
@@ -46,7 +62,6 @@
         </div>
 
     {% else %}
-        <p>No managers to show.</p>
+        <p>No referees to show.</p>
     {% endif %}
 {% endblock %}
-

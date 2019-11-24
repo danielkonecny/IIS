@@ -1,167 +1,183 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Tournament - {{ tournament.name }}
+Tournament - {{ tournament.name }}
 {% endblock %}
 
 {% block header %}
-    Tournaments > {{ tournament.name }}
+Tournaments > {{ tournament.name }}
 {% endblock %}
 
 {% block content %}
 
-    <h2 class="title">{{ tournament.name }}</h2>
+<h2 class="title">{{ tournament.name }}</h2>
 
-    <table class="detail">
-        <tr>
-            <td>poradatel</td>
-            <td><a href="{% url 'users:single' tournament.poradatele.id %}">{{ tournament.poradatele.username }}</a>
-            </td>
-        </tr>
-        <tr>
-            <td>sport</td>
-            <td>{{ tournament.sport }}</td>
-        </tr>
-        <tr>
-            <td>entry</td>
-            <td>{{ tournament.entry }}</td>
-        </tr>
-        <tr>
-            <td>players</td>
-            <td>{{ tournament.player_count }}</td>
-        </tr>
-        <tr>
-            <td>started</td>
-            <td>{{ tournament.started }}</td>
-        </tr>
-        <tr>
-            <td>singleplayer</td>
-            <td>{{ tournament.singleplayer }}</td>
-        </tr>
+<table class="detail">
+    <tr>
+        <td>poradatel</td>
+        <td><a href="{% url 'users:single' tournament.poradatele.id %}">{{ tournament.poradatele.username }}</a>
+        </td>
+    </tr>
+    <tr>
+        <td>sport</td>
+        <td>{{ tournament.sport }}</td>
+    </tr>
+    <tr>
+        <td>entry</td>
+        <td>{{ tournament.entry }}</td>
+    </tr>
+    <tr>
+        <td>players</td>
+        <td>{{ tournament.player_count }}</td>
+    </tr>
+    <tr>
+        <td>started</td>
+        <td>{{ tournament.started }}</td>
+    </tr>
+    <tr>
+        <td>singleplayer</td>
+        <td>{{ tournament.singleplayer }}</td>
+    </tr>
 
-    </table>
+</table>
 
-    {% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}
-        <div class="inner bpad">
-            <form action="{% url 'forms:delete_tournament' tournament.id %}" method="POST">
+{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}
+<div class="inner bpad" style="display: flex; justify-content: flex-start;">
+    <a href="{% url 'forms:edit_tournament' tournament.id %}">
+        <button class="btn btn-primary" style="flex-shrink: 0; margin: 1%; height: max-content">Edit tournament</button>
+    </a>
+    <a href="{% url 'tournaments:start_tournament' tournament.id %}">
+        <button class="btn btn-primary" style="flex-shrink: 0; margin: 1%; height: max-content">Start tournament</button>
+    </a>
+    <form action="{% url 'forms:delete_tournament' tournament.id %}"  method="POST">
+        {% csrf_token %}
+        <input class="btn btn-danger" style="margin: 1%; height: 95%" type="submit" value="Delete tournament">
+    </form>
+</div>
+{% endif %}
+
+{% if user.is_authenticated and tournament.started %}
+<div class="inner bpad">
+    <form action="{% url 'tournaments:start_tournament' tournament.id %}" method="POST">
+        {% csrf_token %}
+        <input class="btn btn-primary" style="max-width: min-content;" type="submit" value="Show match schedule">
+    </form>
+</div>
+{% endif %}
+
+<h2 class="title">Sponsors ({{ sponsors|length }})</h2>
+
+{% if user.is_authenticated and permitted_add_sponsor == True %}
+<p>
+<form method="post" action="{% url 'tournaments:single' tournament.id %}">
+    {% csrf_token %}
+    {{ add_new_sponsor.as_p }}
+    <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Add sponsor">
+</form>
+</p>
+{% endif %}
+
+{% if sponsors %}
+<h2 class="title">Brought to you by:</h2>
+<table class="detail">
+    {% for s in sponsors %}
+    <tr>
+        <td><a href="{% url 'sponsors:single' s.id %}">{{ s.name }}</a></td>
+
+        {% if s.logo %}
+        <td>
+            <img src="{{ s.logo.url }}" width="100"/>
+        </td>
+        {% endif %}
+
+        {% if user.is_authenticated and user == tournament.poradatele %}
+        <td>
+            <form action="{% url 'forms:remove_sponsor' tournament.id s.id %}" method="POST">
                 {% csrf_token %}
-                <input class="square red" type="submit" value="Delete tournament">
+                <input class="btn btn-danger" style="max-width: min-content" type="submit"
+                       value="Remove sponsor">
             </form>
-            <a class="button red" href="{% url 'forms:edit_tournament' tournament.id %}">Edit tournament</a>
-            <a class="button" href="{% url 'tournaments:start_tournament' tournament.id %}">Start tournament</a>
-        </div>
-    {% endif %}
+        </td>
+        {% endif %}
 
-    <h2 class="title">Sponsors ({{ sponsors|length }})</h2>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
 
-    {% if user.is_authenticated and permitted_add_sponsor == True %}
-        <p>
-        <form method="post" action="{% url 'tournaments:single' tournament.id %}">
-            {% csrf_token %}
-            {{ add_new_sponsor.as_p }}
-            <input class="square" type="submit" value="Add sponsor">
-        </form>
-        </p>
-    {% endif %}
+<h2 class="title">Referee ({{ rozhodci|length }})</h2>
+{#    permitted znaci, ze muze byt rozhodci - nehraje v zadnem teamu turnaje#}
+{% if user.is_authenticated and permitted == True and user not in rozhodci %}
+<p>
+<form action="{% url 'forms:request_add_rozhodci' tournament.id user.id %}" method="POST">
+    {% csrf_token %}
+    <input class="btn btn-primary" style="max-width: min-content" type="submit" value="I wanna be referee">
+</form>
+</p>
+{% endif %}
 
-    {% if sponsors %}
-        <h2 class="title">Brought to you by:</h2>
-        <table class="detail">
-            {% for s in sponsors %}
-                <tr>
-                    <td><a href="{% url 'sponsors:single' s.id %}">{{ s.name }}</a></td>
-
-                    {% if s.logo %}
-                        <td>
-                            <img src="{{ s.logo.url }}" width="100"/>
-                        </td>
-                    {% endif %}
-
-                    {% if user.is_authenticated and user == tournament.poradatele %}
-                        <td>
-                            <form action="{% url 'forms:remove_sponsor' tournament.id s.id %}" method="POST">
-                                {% csrf_token %}
-                                <input class="square" type="submit" value="Remove sponsor">
-                            </form>
-                        </td>
-                    {% endif %}
-
-                </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-
-    <h2 class="title">Referee ({{ rozhodci|length }})</h2>
-    {% if user.is_authenticated and permitted == True and user not in rozhodci %}
-        <p>
-        <form action="{% url 'forms:request_add_rozhodci' tournament.id user.id %}" method="POST">
-            {% csrf_token %}
-            <input class="square" type="submit" value="I wanna be referee">
-        </form>
-        </p>
-    {% endif %}
-
-    {% if rozhodci %}
-        <table class="detail">
-            {% for r in rozhodci %}
-                <tr>
-                    <td><a href="{% url 'users:single' r.id %}">{{ r.last_name }}, {{ r.first_name }}</a></td>
-                    {% if user.is_authenticated and user == tournament.poradatele %}
-                        <td>
-                            <form action="{% url 'forms:remove_rozhodci' tournament.id r.id %}" method="POST">
-                                {% csrf_token %}
-                                <input class="square" type="submit" value="Remove referee">
-                            </form>
-                        </td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No referee registered.</p>
-    {% endif %}
+{% if rozhodci %}
+<table class="detail">
+    {% for r in rozhodci %}
+    <tr>
+        <td><a href="{% url 'users:single' r.id %}">{{ r.last_name }}, {{ r.first_name }}</a></td>
+        {% if user.is_authenticated and user == tournament.poradatele %}
+        <td>
+            <form action="{% url 'forms:remove_rozhodci' tournament.id r.id %}" method="POST">
+                {% csrf_token %}
+                <input class="btn btn-danger" style="max-width: min-content" type="submit"
+                       value="Remove referee">
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No referee registered.</p>
+{% endif %}
 
 
-    <h2 class="title">Teams ({{ teams|length }})</h2>
+<h2 class="title">Teams ({{ teams|length }})</h2>
 
-    {% if user.is_authenticated and permitted_add_team == True %}
-        <p>
-        <form method="post" action="{% url 'tournaments:single' tournament.id %}">
-            {% csrf_token %}
-            {{ add_new_team.as_p }}
-            <input class="square" type="submit" value="Add team">
-        </form>
-        </p>
-    {% endif %}
+{% if user.is_authenticated and permitted_add_team == True %}
+<p>
+<form method="post" action="{% url 'tournaments:single' tournament.id %}">
+    {% csrf_token %}
+    {{ add_new_team.as_p }}
+    <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Add team">
+</form>
+</p>
+{% endif %}
 
-    {% if teams %}
-        <table class="detail">
-            {% for t in teams %}
-                <tr>
-                    <td>
-                        <a href="{% url 'teams:single' t.id %}">{{ t.name }}</a>
-                    </td>
-                    <td>
-                        {% if t.flag %}
-                            <img src="{{ t.flag.url }}" width="100"/>
-                        {% endif %}
-                    </td>
-                    {% if user.is_authenticated and not tournament.started %}
-                        {% if user == tournament.poradatele or user == t.managers %}
-                            <td>
-                                <form action="{% url 'forms:remove_team' tournament.id t.id %}" method="POST">
-                                    {% csrf_token %}
-                                    <input class="square" type="submit" value="Remove team">
-                                </form>
-                            </td>
-                        {% endif %}
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No teams registered.</p>
-    {% endif %}
+{% if teams %}
+<table class="detail">
+    {% for t in teams %}
+    <tr>
+        <td>
+            <a href="{% url 'teams:single' t.id %}">{{ t.name }}</a>
+        </td>
+        <td>
+            {% if t.flag %}
+            <img src="{{ t.flag.url }}" width="100"/>
+            {% endif %}
+        </td>
+        {% if user.is_authenticated and not tournament.started %}
+        {% if user == tournament.poradatele or user == t.managers %}
+        <td>
+            <form action="{% url 'forms:remove_team' tournament.id t.id %}" method="POST">
+                {% csrf_token %}
+                <input class="btn btn-danger" style="max-width: min-content" type="submit"
+                       value="Remove team">
+            </form>
+        </td>
+        {% endif %}
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No teams registered.</p>
+{% endif %}
 
 {% endblock %}
-

@@ -23,7 +23,7 @@
                     </p>
                     <p>
                         {% if p.team_teams %}
-                            plays in:
+                            Plays in:
                             {% for t in p.team_teams.all %}
                                 <i><a href="{% url 'teams:single' t.id %}">{{ t.name }}</a></i>&nbsp;/
                             {% endfor %}
