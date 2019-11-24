@@ -180,3 +180,11 @@ font-weight: normal;
 ul.inner {
 margin-bottom: 25px;
 }
+
+.x-size {
+    font-size: x-large
+}
+
+.xx-size {
+    font-size: xx-large
+}

@@ -6,7 +6,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }} /static/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/style.css'  %}" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400&display=swap" rel="stylesheet">
-    <title>IIS Project - Sport</title>
+    <title >IIS Project - Sport</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/cosmo/bootstrap.css">
 </head>
 
@@ -14,7 +14,7 @@
 <div id="container">
     {% block sidebar %}
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
-        <a class="navbar-brand active" href="#" style="padding-right: 10%"><strong>IIS Project - Sport</strong></a>
+        <a class="navbar-brand active" href="#" style="padding-right: 10%"><strong class="xx-size">IIS Project - Sport</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,56 +23,56 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/" style="font-size: x-large;">Home</a>
+                    <a class="nav-link x-size" href="/" >Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'tournaments:index' %}">Tournaments</a>
+                    <a class="nav-link x-size" href="{% url 'tournaments:index' %}">Tournaments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'teams:index' %}">Teams</a>
+                    <a class="nav-link x-size" href="{% url 'teams:index' %}">Teams</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'sponsors:index' %}">Sponsors</a>
+                    <a class="nav-link x-size" href="{% url 'sponsors:index' %}">Sponsors</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle x-size" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Users
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'users:players' %}">Players</a>
-                        <a class="dropdown-item" href="{% url 'users:managers' %}">Managers</a>
-                        <a class="dropdown-item" href="{% url 'users:rozhodci' %}">Referees</a>
+                        <a class="dropdown-item x-size" href="{% url 'users:players' %}">Players</a>
+                        <a class="dropdown-item x-size" href="{% url 'users:managers' %}">Managers</a>
+                        <a class="dropdown-item x-size" href="{% url 'users:rozhodci' %}">Referees</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle x-size" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Profile
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if user.is_authenticated %}
-                        <a class="dropdown-item" href="{% url 'teams:your_teams' %}">Your teams</a>
-                        <a class="dropdown-item" href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a>
-                        <a class="dropdown-item" href="{% url 'forms:profile' %}">Profile</a>
+                        <a class="dropdown-item x-size" href="{% url 'teams:your_teams' %}">Your teams</a>
+                        <a class="dropdown-item x-size" href="{% url 'tournaments:your_tournaments' %}">Your tournaments</a>
+                        <a class="dropdown-item x-size" href="{% url 'forms:profile' %}">Profile</a>
                         {% endif %}
                     </div>
                 </li>
                 {% if request.user.is_superuser %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Administration</a>
+                    <a class="nav-link x-size" href="/admin">Administration</a>
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                <li class="nav-item">
+                <li class="nav-item x-size">
                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link x-size" href="{% url 'login' %}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'forms:signup' %}">Register</a>
+                    <a class="nav-link x-size" href="{% url 'forms:signup' %}">Register</a>
                 </li>
                 {% endif %}
             </ul>

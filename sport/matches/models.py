@@ -4,7 +4,8 @@ from django.db import models
 class Match(models.Model):
 
     def __str__(self):
-        return self.team_A.name + ' vs. ' + self.team_B.name
+        return "FIXME"
+        # return str(self.team_A.name) + ' vs. ' + str(self.team_B.name)
 
     turnaj = models.ForeignKey('tournaments.Tournament', on_delete=models.CASCADE)
     team_A = models.ForeignKey('teams.Team', blank=True, null=True, related_name='team_A', on_delete=models.CASCADE)

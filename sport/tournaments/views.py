@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Tournament
 from teams.models import Team
@@ -153,18 +155,47 @@ def start_tournament(request, id):
     new_matches(None, index, tournament)
 
     matches = Match.objects.filter(turnaj=tournament)
+    teams = tournament.teams.all()
 
-    return render(request, 'tournaments/match_schedule.html', {'tournament': tournament, 'matches': matches})
+    fill_matches(matches, teams)
+
+    return render(request, 'tournaments/match_schedule.html',
+                  {'tournament': tournament, 'matches': matches})
 
 
+# recurse function
+# creates 2^index "spider" :D of matches which are connected
 def new_matches(match, index, tournament):
     new_match = Match()
     if match:
         new_match.nextMatch = match
-        new_match.startPosition = index
+        new_match.start_position = index
     new_match.turnaj = tournament
     index -= 1
     new_match.save()
     if index > 0:
         new_matches(new_match, index, tournament)
         new_matches(new_match, index, tournament)
+
+
+def fill_matches(matches, teams):
+    first_matches = []
+    first_matches_count = 0
+    for m in matches:
+        if m.start_position == 1:
+            first_matches.append(m)
+            first_matches_count += 1
+
+    draw = []
+    draw = random.sample(range(0, first_matches_count), first_matches_count)
+    print(draw)
+
+    i = 0
+    for d in draw:
+        i = i + 1
+        a_b = i % 2
+        pos = i // 2
+        if a_b:
+            first_matches[pos].team_A = teams[d]
+        else:
+            first_matches[pos].team_B = teams[d]

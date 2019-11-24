@@ -12,13 +12,26 @@
 
     <h2 class="title">{{ tournament.name }}</h2>
 
-    <p>{{ default.name }}</p>
+    {% if debug %}
+        {% for d in debug %}
+{#            <p>{{ m.name }}</p>#}
+            <p>{{d}}</p>
+        {% endfor %}
+    {% endif %}
 
-{#    {% if matches %}#}
-{#        {% for m in matches %}#}
-{#            <p>{{ m.start_position }}</p>#}
-{#        {% endfor %}#}
-{#    {% endif %}#}
+    {% if matches %}
+        {% for m in matches %}
+{#            <p>{{ m.name }}</p>#}
+            <p>Je tu</p>
+        {% endfor %}
+    {% endif %}
+
+
+
+    {#        {% for m in matches %}#}
+    {#            <p>{{ m.start_position }}</p>#}
+    {#        {% endfor %}#}
+    {#    {% endif %}#}
 
     {#		{% if user.is_authenticated and user == tournament.poradatele and not tournament.started %}#}
     {##}
