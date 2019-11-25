@@ -3,14 +3,36 @@ from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from teams.models import Team
+from matches.models import Match
 from tournaments.models import Tournament
 
 
 def single(request, id):
     user = get_object_or_404(User, pk=id)
-    teams = user.team_teams.all()
 
-    return render(request, 'users/single.html', {'user': user, 'teams': teams})
+    matches = Match.objects.all()
+    user_matches = []
+    won_matches = []
+    for m in matches:
+        for p in m.team_A.players.all():
+            if p == user:
+                user_matches.append(m)
+                if m.score_A > m.score_B:
+                    won_matches.append(m)
+        for p in m.team_B.players.all():
+            if p == user:
+                user_matches.append(m)
+                if m.score_B > m.score_A:
+                    won_matches.append(m)
+
+    if len(won_matches) == 0:
+        percentage = 0
+    else:
+        percentage = len(won_matches) / len(user_matches) * 100
+
+    # player_won_match_count
+    return render(request, 'users/single.html',
+                  {'user': user, 'user_matches': user_matches, 'won_matches': won_matches, 'percentage': percentage})
 
 
 # def players(request):

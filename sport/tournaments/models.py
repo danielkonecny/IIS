@@ -20,3 +20,4 @@ class Tournament(models.Model):
     rozhodci = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tour_rozhodci',blank=True)
     requests_rozhodci = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='tour_requests_rozhodci',blank=True)
     poradatele = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='tour_poradatele', on_delete='CASCADE')
+    winner = models.ForeignKey('teams.Team', blank=True, null=True, related_name='winner', on_delete=models.CASCADE)

@@ -18,12 +18,5 @@
 
 ### VETSI VECI:
 ### DROBNOSTI:
-* nastavit ze na bezici turnaj se neda registrovat atd.
-* zobrazeni vlajky nejde
 * odhlaseni po urcite dobe
-* pri prihlasovani teamu - jestli neni rozhodci ??je tam??
-* statistiky
-* zobrazit v turnaji vyherce
-* pridavani vysledku - rozhodci
-* otestovat unicode
 ### KONZULTACE:

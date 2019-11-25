@@ -36,7 +36,7 @@ class AddSponsorForm(forms.Form):
 class CreateTeam(ModelForm):
     class Meta:
         model = Team
-        fields = ['id', 'name', 'flag']  # pridani noveho tymu
+        fields = ['id', 'name', 'flag', 'singleplayerteam']  # pridani noveho tymu
 
 
 class CreateTournament(ModelForm):
@@ -54,7 +54,7 @@ class CreateSponsor(ModelForm):
 class TournamentForm(ModelForm):
     class Meta:
         model = Tournament
-        fields = ['name', 'entry', 'player_count']  # edit turnaje
+        fields = ['name', 'entry', 'player_count', 'singleplayer']  # edit turnaje
 
 
 class AddMatchResultsForm(ModelForm):

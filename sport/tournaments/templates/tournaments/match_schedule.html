@@ -10,7 +10,12 @@
 
 {% block content %}
 
-    <h2 class="title">{{ tournament.name }}</h2>
+    <h2 class="title">
+        {{ tournament.name }}
+        {% if tournament.winner %}
+            - WINNER: {{ tournament.winner.name }}
+        {% endif %}
+    </h2>
 
     {% if layers %}
         {% for l in layers %}
@@ -63,11 +68,16 @@
                                     <td></td>
                                 {% endif %}
                                 <td>
-                                    <a href="{% url 'forms:add_match_results' m.id %}">
-                                        <button class="btn btn-primary"
-                                                style="flex-shrink: 0; margin: 1%; height: max-content">Add results
-                                        </button>
-                                    </a>
+                                    {% if is_referee %}
+                                        <a href="{% url 'forms:add_match_results' m.id %}">
+                                            <button class="btn btn-primary"
+                                                    style="flex-shrink: 0; margin: 1%; height: max-content">Add results
+                                            </button>
+                                        </a>
+                                    {% else %}
+                                        Only referee can add results.
+                                    {% endif %}
+
                                 </td>
                             </tr>
                         {% endif %}

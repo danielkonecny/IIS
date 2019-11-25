@@ -12,7 +12,14 @@
 
     <h1>{{ user.first_name }} {{ user.last_name }}</h1>
 
-    <h2 class="title">Playing in teams ({{ user.team_teams.all|length }})</h2>
+    <h2 style="margin-top: 40px">Statisctics</h2>
+    <h4>Number of matches played: {{ user_matches|length }}</h4>
+    <h4>Number of matches won: {{ won_matches|length }}</h4>
+    <h4>Won matches percentage: {{ percentage }} %</h4>
+
+    <h2 style="margin-top: 40px">Roles</h2>
+
+    <h3 class="title">Playing in teams ({{ user.team_teams.all|length }})</h3>
 
     {% if user.team_teams %}
         <table class="detail">
@@ -29,7 +36,7 @@
         <p>No teams.</p>
     {% endif %}
 
-    <h2 class="title">Refereeing tournaments ({{ user.tour_rozhodci.all|length }})</h2>
+    <h3 class="title">Refereeing tournaments ({{ user.tour_rozhodci.all|length }})</h3>
 
     {% if user.tour_rozhodci %}
         <table class="detail">
@@ -46,7 +53,7 @@
         <p>No teams.</p>
     {% endif %}
 
-    <h2 class="title">Managing teams ({{ user.team_managers.all|length }})</h2>
+    <h3 class="title">Managing teams ({{ user.team_managers.all|length }})</h3>
 
     {% if user.team_managers %}
         <table class="detail">

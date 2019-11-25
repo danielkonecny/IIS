@@ -216,9 +216,11 @@ def edit_tournament(request, id):
         form = TournamentForm(request.POST, instance=tournament)
         if form.is_valid():
             new = form.save(commit=False)
+            if new.singleplayer:
+                new.player_count = 1
             new.save()
             messages.success(request, 'Tournament saved.')
-            return redirect('forms:profile')
+            return redirect('tournaments:index')
     else:
         form = TournamentForm(instance=tournament)
     return render(request, 'forms/edit_tournament.html', {'edit': form, 'tournament': tournament})
@@ -231,6 +233,8 @@ def create_tournament(request):
         if form.is_valid():
             new = form.save(commit=False)
             new.poradatele = request.user
+            if new.singleplayer == True:
+                new.player_count = 1
             new.save()
             messages.success(request, 'Tournament created.')
             return redirect('tournaments:index')
@@ -243,7 +247,7 @@ def create_tournament(request):
 # vytvor novej tym. Tym upravit nejde, potreba ho smazat a zalozit dalsi.
 def create_team(request):
     if request.method == 'POST':
-        form = CreateTeam(request.POST)
+        form = CreateTeam(request.POST, request.FILES)
         if form.is_valid():
             new = form.save(commit=False)
             new.managers = request.user
@@ -301,6 +305,9 @@ def add_match_results(request, id):
                     next_match.team_B = winner
 
                 next_match.save()
+            else:
+                match.turnaj.winner = winner
+                match.turnaj.save()
 
             messages.success(request, 'Match results saved.')
             return start_tournament(request, tournament_id)

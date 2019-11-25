@@ -41,7 +41,15 @@ def single(request, id):
         available_teams = available_teams.exclude(tour_requests_teams__in=[tournament])
         available_teams = available_teams.filter(singleplayerteam=tournament.singleplayer)
 
-    # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE    
+    tournament_referees = tournament.rozhodci.all()
+    all_teams = Team.objects.all()
+    for ref in tournament_referees:
+        for t in available_teams:
+            for p in t.players.all():
+                if ref == p:
+                    available_teams = available_teams.exclude(id=t.id)
+
+    # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
     if request.method == 'POST':
         add_new_team = AddTeamForm(request.POST, t=available_teams)
         if add_new_team.is_valid():
@@ -158,6 +166,12 @@ def start_tournament(request, id):
                              'Wrong player count in team ' + t.name + ' - ' + str(players.count()) + ' players.')
             return single(request, id)
 
+    if len(tournament.rozhodci.all()) < 1:
+        messages.warning(request,
+                         'Tournament is missing a referee.')
+        return single(request, id)
+
+
     if not tournament.started:
         new_matches(None, index, tournament)
 
@@ -174,9 +188,31 @@ def start_tournament(request, id):
     for i in range(1, number_of_layers + 1):
         layers.append(i)
 
+    #     set winner when one of teams has higher score - means match finished
+    winner = None
+    for m in matches:
+        if m.start_position == index:
+            if m.score_A > m.score_B:
+                winner = m.team_A
+            elif m.score_B > m.score_A:
+                winner = m.team_B
+
+
+
+
+
+
+    is_referee = False
+    referees = tournament.rozhodci.all()
+    for r in referees:
+        if r == request.user:
+            is_referee = True
+
+
+
 
     return render(request, 'tournaments/match_schedule.html',
-                  {'tournament': tournament, 'matches': matches, 'layers': layers})
+                  {'tournament': tournament, 'matches': matches, 'layers': layers, 'is_referee': is_referee})
 
 
 # recurse function

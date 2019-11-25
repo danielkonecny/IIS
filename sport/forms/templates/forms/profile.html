@@ -18,29 +18,42 @@
 
     {% if requests_players %}
         <h2 class="title">Team join requests</h2>
-        <table class="detail">
-            {% for r in requests_players.all %}
+        <table class="table detail">
+            <thead class="thead thead-dark">
+            <th width="25%">Player</th>
+            <th width="25%">Team</th>
+            <th width="25%">Accept request</th>
+            <th width="25%">Deny request</th>
+            </thead>
+            <tbody>
+                {% for r in requests_players.all %}
 
-                {% for request in r.requests_users.all %}
-                    <tr>
-                        <td width="25%"><a href="{% url 'users:single' request.id %}">{{ request.username }}</a></td>
-                        <td width="25%"><a href="{% url 'teams:single' r.id %}">{{ r.name }}</a></td>
-                        <td width="25%">
-                            <form action="{% url 'forms:request_player_ok' r.id request.id %}" method="POST">
-                                {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
-                            </form>
-                        </td>
-                        <td width="25%">
-                            <form action="{% url 'forms:request_player_remove' r.id request.id %}" method="POST">
-                                {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
-                            </form>
-                        </td>
-                    </tr>
+                    {% for request in r.requests_users.all %}
+                        <tr>
+                            <td width="25%"><a
+                                    href="{% url 'users:single' request.id %}">{{ request.first_name }} {{ request.last_name }}</a>
+                            </td>
+                            <td width="25%"><a href="{% url 'teams:single' r.id %}">{{ r.name }}</a></td>
+                            <td width="25%">
+                                <form action="{% url 'forms:request_player_ok' r.id request.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                           value="Accept">
+                                </form>
+                            </td>
+                            <td width="25%">
+                                <form action="{% url 'forms:request_player_remove' r.id request.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                           value="Deny">
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
                 {% endfor %}
+            </tbody>
 
-            {% endfor %}
         </table>
     {% else %}
         <p>No requests.</p>
@@ -49,29 +62,42 @@
 
     {% if requests_tournaments %}
         <h2 class="title">Referee requests</h2>
-        <table class="detail">
+        <table class="table detail">
+            <thead class="thead thead-dark">
+            <th width="25%">Referee</th>
+            <th width="25%">Tournament</th>
+            <th width="25%">Accept request</th>
+            <th width="25%">Deny request</th>
+            </thead>
+            <tbody>
             {% for r in requests_tournaments.all %}
 
                 {% for player in r.requests_rozhodci.all %}
                     <tr>
-                        <td width="25%"><a href="{% url 'users:single' player.id %}">{{ player.username }}</a></td>
+                        <td width="25%"><a
+                                href="{% url 'users:single' player.id %}">{{ player.first_name }} {{ player.last_name }}</a>
+                        </td>
                         <td width="25%"><a href="{% url 'tournaments:single' r.id %}">{{ r.name }}</a></td>
                         <td width="25%">
                             <form action="{% url 'forms:request_rozhodci_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                       value="Accept">
                             </form>
                         </td>
                         <td width="25%">
                             <form action="{% url 'forms:request_rozhodci_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                       value="Deny">
                             </form>
                         </td>
                     </tr>
                 {% endfor %}
 
             {% endfor %}
+            </tbody>
+
         </table>
     {% else %}
         <p>No requests.</p>
@@ -80,7 +106,14 @@
 
     {% if requests_tournaments %}
         <h2 class="title">Teams to play requests</h2>
-        <table class="detail">
+        <table class="table detail">
+            <thead class="thead thead-dark">
+            <th width="25%">Team</th>
+            <th width="25%">Tournament</th>
+            <th width="25%">Accept request</th>
+            <th width="25%">Deny request</th>
+            </thead>
+            <tbody>
             {% for r in requests_tournaments.all %}
 
                 {% for player in r.requests_teams.all %}
@@ -90,19 +123,23 @@
                         <td width="25%">
                             <form action="{% url 'forms:request_team_ok' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Accept">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                       value="Accept">
                             </form>
                         </td>
                         <td width="25%">
                             <form action="{% url 'forms:request_team_remove' r.id player.id %}" method="POST">
                                 {% csrf_token %}
-                                <input class="btn btn-primary" style="max-width: min-content" type="submit" value="Deny">
+                                <input class="btn btn-primary" style="max-width: min-content" type="submit"
+                                       value="Deny">
                             </form>
                         </td>
                     </tr>
                 {% endfor %}
 
             {% endfor %}
+            </tbody>
+
         </table>
     {% else %}
         <p>No requests.</p>

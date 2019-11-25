@@ -4,6 +4,7 @@ from tournaments.models import Tournament
 from func.func import compare
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from matches.models import Match
 from django.db.models import Q  # , Count
 from django.core.paginator import Paginator
 
@@ -25,9 +26,27 @@ def single(request, id):
     if team.singleplayerteam and team.players.count():
         able_to_play = False
 
+    matches = Match.objects.all()
+    teams_matches = []
+    won_matches = []
+    for m in matches:
+        if m.team_A == team:
+            teams_matches.append(m)
+            if m.score_A > m.score_B:
+                won_matches.append(m)
+        if m.team_B == team:
+            teams_matches.append(m)
+            if m.score_B > m.score_A:
+                won_matches.append(m)
+
+    if len(won_matches) == 0:
+        percentage = 0
+    else:
+        percentage = len(won_matches) / len(teams_matches) * 100
+
     return render(request, 'teams/single.html',
                   {'team': team, 'tournaments': tournaments, 'players': players, 'manager': manager,
-                   'permitted': permitted, 'able_to_play': able_to_play})
+                   'permitted': permitted, 'able_to_play': able_to_play, 'teams_matches': teams_matches, 'won_matches': won_matches, 'percentage': percentage})
 
 
 def index(request):

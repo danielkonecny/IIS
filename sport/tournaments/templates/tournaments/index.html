@@ -1,59 +1,72 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Tournaments
+    Tournaments
 {% endblock %}
 
 {% block header %}
-	List of tournaments
+    List of tournaments
 {% endblock %}
 
 {% block content %}
 
-{% if user.is_authenticated %}
-	<div class="inner">
-        <a href ="{% url 'forms:create_tournament' %}"><button class="btn btn-primary" style="margin: 2%">New tournament</button></a>
-	</div>
-{% endif %}
+    {% if user.is_authenticated %}
+        <div class="inner">
+            <a href="{% url 'forms:create_tournament' %}">
+                <button class="btn btn-primary" style="margin: 2%">New tournament</button>
+            </a>
+        </div>
+    {% endif %}
 
-	{% if front %}
-    	<ul class="inner">
-    	{% for t in front %}
-        	<li class="item">
-                <p>
-            		<a href = "{% url 'tournaments:single' t.id %}">
-            		<h2>
-            		{{t.name}}
-            		</h2>
-            		</a>
-            	</p>
-            	<p>
-            		sport: <i>{{t.sport}}</i>
-            	</p>
-            	<p>
-            		entry: <i>{{t.entry}} CZK</i>
-            	</p>
-            	<p>
-            		players: <i>{{t.player_count}}</i>
-            	</p>
-        	</li>
-    	{% endfor %}
-    	</ul>
-    	
-		<div class="paging">
-        		{% if front.has_previous %}
-            		<a href="?page={{ front.previous_page_number }}">&larr;</a>
-        		{% endif %}
-		
-            	{{ front.number }} / {{ front.paginator.num_pages }}
-		
-        		{% if front.has_next %}
-            		<a href="?page={{ front.next_page_number }}">&rarr;</a>
-        		{% endif %}
-		</div>
-    	
-	{% else %}
-    	<p>No tournaments to show.</p>
-	{% endif %}
+    {% if front %}
+        <ul class="inner">
+            {% for t in front %}
+                <li class="item">
+                    <p>
+                        <a href="{% url 'tournaments:single' t.id %}">
+                            <h2>
+                                {{ t.name }}
+                                {% if t.winner %}
+                                    - WINNER: {{ t.winner.name }}
+                                {% endif %}
+                            </h2>
+                        </a>
+                    </p>
+                    <p>
+                        Sport: <i>{{ t.sport }}</i>
+                    </p>
+                    <p>
+                        Entry fee: <i>{{ t.entry }} CZK</i>
+                    </p>
+                    <p>
+                        Player count: <i>{{ t.player_count }}</i>
+                    </p>
+                    <p>
+                        Single player:
+                        {% if t.singleplayer %}
+                            <i>Yes</i>
+                        {% else %}
+                            <i>No</i>
+                        {% endif %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div class="paging">
+            {% if front.has_previous %}
+                <a href="?page={{ front.previous_page_number }}">&larr;</a>
+            {% endif %}
+
+            {{ front.number }} / {{ front.paginator.num_pages }}
+
+            {% if front.has_next %}
+                <a href="?page={{ front.next_page_number }}">&rarr;</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <p>No tournaments to show.</p>
+    {% endif %}
 {% endblock %}
 
