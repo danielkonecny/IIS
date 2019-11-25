@@ -30,6 +30,7 @@
         </tr>
         <tr>
             <td>Entry fee</td>
+            <td>Entry fee</td>
             <td>{{ tournament.entry }} CZK</td>
         </tr>
         <tr>
@@ -103,13 +104,13 @@
             {% for s in sponsors %}
                 <tr>
                     <td><a href="{% url 'sponsors:single' s.id %}">{{ s.name }}</a></td>
+                    <td>
+                        {% if s.logo %}
 
-                    {% if s.logo %}
-                        <td>
                             <img src="{{ s.logo.url }}" width="100"/>
-                        </td>
-                    {% endif %}
 
+                        {% endif %}
+                    </td>
                     {% if user.is_authenticated and user == tournament.poradatele %}
                         <td>
                             <form action="{% url 'forms:remove_sponsor' tournament.id s.id %}" method="POST">
