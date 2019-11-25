@@ -27,6 +27,11 @@
             		</h2>
             		</a>
             	</p>
+                {% if t.flag %}
+            	<p>
+            		<img src='{{t.logo.url}}' width='100' />
+            	</p>
+            	{% endif %}
 {#            	<p>#}
 {#            		sport: <i>{{t.sport}}</i>#}
 {#            	</p>#}
