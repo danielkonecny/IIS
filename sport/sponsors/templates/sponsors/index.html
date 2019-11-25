@@ -1,63 +1,56 @@
 {% extends "base.html" %}
 
 {% block title %}
-	Sponsors
+    Sponsors
 {% endblock %}
 
 {% block header %}
-	List of sponsors
+    List of sponsors
 {% endblock %}
 
 {% block content %}
 
-{% if user.is_authenticated %}
-	<div class="inner">
-		<a href ="{% url 'forms:create_sponsor' %}"><button class="btn btn-primary" style="margin: 2%">New sponsor</button></a>
-	</div>
-{% endif %}
+    {% if user.is_authenticated %}
+        <div class="inner">
+            <a href="{% url 'forms:create_sponsor' %}">
+                <button class="btn btn-primary" style="margin: 2%">New sponsor</button>
+            </a>
+        </div>
+    {% endif %}
 
-	{% if front %}
-    	<ul class="inner">
-    	{% for t in front %}
-        	<li class="item">
-                <p>
-{#            		<a href = "{% url 'tournaments:single' t.id %}">#}
-            		<h2>
-            		{{t.name}}
-            		</h2>
-            		</a>
-            	</p>
-                {% if t.flag %}
-            	<p>
-            		<img src='{{t.logo.url}}' width='100' />
-            	</p>
-            	{% endif %}
-{#            	<p>#}
-{#            		sport: <i>{{t.sport}}</i>#}
-{#            	</p>#}
-{#            	<p>#}
-{#            		entry: <i>{{t.entry}} CZK</i>#}
-{#            	</p>#}
-{#            	<p>#}
-{#            		players: <i>{{t.player_count}}</i>#}
-{#            	</p>#}
-        	</li>
-    	{% endfor %}
-    	</ul>
+    {% if front %}
+        <ul class="inner">
+            {% for t in front %}
+                <li class="item">
+                    <p>
+                        {% if t.logo %}
+                            <p>
+                                <h2>{{ t.name }}</h2>
+                                <img src='{{ t.logo.url }}' width='100'/>
+                            </p>
+                        {% else %}
+                            <p>
+                                <h2>{{ t.name }}</h2>
+                            </p>
+                        {% endif %}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
 
-		<div class="paging">
-        		{% if front.has_previous %}
-            		<a href="?page={{ front.previous_page_number }}">&larr;</a>
-        		{% endif %}
+        <div class="paging">
+            {% if front.has_previous %}
+                <a href="?page={{ front.previous_page_number }}">&larr;</a>
+            {% endif %}
 
-            	{{ front.number }} / {{ front.paginator.num_pages }}
+            {{ front.number }} / {{ front.paginator.num_pages }}
 
-        		{% if front.has_next %}
-            		<a href="?page={{ front.next_page_number }}">&rarr;</a>
-        		{% endif %}
-		</div>
+            {% if front.has_next %}
+                <a href="?page={{ front.next_page_number }}">&rarr;</a>
+            {% endif %}
+        </div>
 
-	{% else %}
-    	<p>No sponsors to show.</p>
-	{% endif %}
+    {% else %}
+        <p>No sponsors to show.</p>
+    {% endif %}
 {% endblock %}
