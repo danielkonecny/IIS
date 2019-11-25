@@ -24,9 +24,10 @@ SECRET_KEY = 'w5&e@+1)ot+9a##pf5&*p3e2=bl#5400cnd7!ay@2*fy^66b=g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','127.0.0.1','isstournaments.herokuapp.com','pacific-oasis-90795.herokuapp.com']
 
 INSTALLED_APPS = [
+    'func.apps.FuncConfig',
     'forms.apps.FormsConfig',
     'users.apps.UsersConfig',
     'matches.apps.MatchesConfig',
@@ -81,10 +82,12 @@ WSGI_APPLICATION = 'sport.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': ':sqlite3.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
+        # 'PORT': '80',
     }
 }
 
@@ -140,7 +143,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 # pokud se cookie age nenastavi, tak je to na 2 tydny
 SESSION_COOKIE_AGE = 60
-# nastaveni obnoveni casovani odhlaseni po refresh stranky
+# nastaveni obnoveni casovani odhlaseni po refreshi stranky
 SESSION_SAVE_EVERY_REQUEST = True
 
 # Heroku: Update database configuration from $DATABASE_URL.
