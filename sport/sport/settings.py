@@ -139,3 +139,8 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 # REDIRECT AFTER
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# pokud se cookie age nenastavi, tak je to na 2 tydny
+SESSION_COOKIE_AGE = 60
+# nastaveni obnoveni casovani odhlaseni po refreshi stranky
+SESSION_SAVE_EVERY_REQUEST = True

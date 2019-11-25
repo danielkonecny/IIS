@@ -18,5 +18,4 @@
 
 ### VETSI VECI:
 ### DROBNOSTI:
-* odhlaseni po urcite dobe
 ### KONZULTACE:

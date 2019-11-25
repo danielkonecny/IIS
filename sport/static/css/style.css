@@ -217,3 +217,11 @@ ul.inner {
     text-align: center;
     padding-top: 5px;
 }
+
+#id_singleplayerteam {
+    width: min-content;
+}
+
+#id_singleplayer {
+    width: min-content;
+}
