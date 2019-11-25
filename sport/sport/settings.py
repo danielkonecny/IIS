@@ -24,7 +24,7 @@ SECRET_KEY = 'w5&e@+1)ot+9a##pf5&*p3e2=bl#5400cnd7!ay@2*fy^66b=g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','isstournaments.herokuapp.com','pacific-oasis-90795.herokuapp.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','iistournaments.herokuapp.com','pacific-oasis-90795.herokuapp.com']
 
 INSTALLED_APPS = [
     'func.apps.FuncConfig',
