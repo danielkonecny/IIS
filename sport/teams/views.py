@@ -1,13 +1,21 @@
 from django.shortcuts import get_object_or_404, render
 from .models import Team
 from tournaments.models import Tournament
-from func.func import compare
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from matches.models import Match
-from django.db.models import Q  # , Count
+from django.db.models import Q
 from django.core.paginator import Paginator
 
+# funkce k zjisteni, jestli se tym vyskytuje v nejakym aktivnich turnajich
+def compare(l1,l2):
+    s1 = set(l1)
+    s2 = set(l2)
+
+    if (s1 & s2):
+        return True 
+    else: 
+        return False
 
 def single(request, id):
     team = get_object_or_404(Team, pk=id)
@@ -80,5 +88,4 @@ def your_teams(request):
     paginator = Paginator(front, 10)
     page = request.GET.get('page')
     content = paginator.get_page(page)
-    # front = Team.objects.filter(Q(managers=user), Q(players__in=[user]))  # vem tymy kde to ridi nebo v nich hraje
     return render(request, 'teams/index.html', {'front': content})

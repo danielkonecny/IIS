@@ -27,7 +27,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'func.apps.FuncConfig',
     'forms.apps.FormsConfig',
     'users.apps.UsersConfig',
     'matches.apps.MatchesConfig',
@@ -82,12 +81,10 @@ WSGI_APPLICATION = 'sport.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'NAME': ':sqlite3.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
-        # 'PORT': '80',
     }
 }
 
@@ -143,7 +140,7 @@ LOGOUT_REDIRECT_URL = '/'
 
 # pokud se cookie age nenastavi, tak je to na 2 tydny
 SESSION_COOKIE_AGE = 60
-# nastaveni obnoveni casovani odhlaseni po refreshi stranky
+# nastaveni obnoveni casovani odhlaseni po refresh stranky
 SESSION_SAVE_EVERY_REQUEST = True
 
 # Heroku: Update database configuration from $DATABASE_URL.
