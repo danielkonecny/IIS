@@ -43,11 +43,13 @@ def single(request, id):
 
     tournament_referees = tournament.rozhodci.all()
     all_teams = Team.objects.all()
-    for ref in tournament_referees:
-        for t in available_teams:
-            for p in t.players.all():
-                if ref == p:
-                    available_teams = available_teams.exclude(id=t.id)
+    if tournament_referees:
+        for ref in tournament_referees:
+            if available_teams:
+                for t in available_teams:
+                    for p in t.players.all():
+                        if ref == p:
+                            available_teams = available_teams.exclude(id=t.id)
 
     # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
     if request.method == 'POST':
@@ -171,7 +173,6 @@ def start_tournament(request, id):
                          'Tournament is missing a referee.')
         return single(request, id)
 
-
     if not tournament.started:
         new_matches(None, index, tournament)
 
@@ -197,19 +198,11 @@ def start_tournament(request, id):
             elif m.score_B > m.score_A:
                 winner = m.team_B
 
-
-
-
-
-
     is_referee = False
     referees = tournament.rozhodci.all()
     for r in referees:
         if r == request.user:
             is_referee = True
-
-
-
 
     return render(request, 'tournaments/match_schedule.html',
                   {'tournament': tournament, 'matches': matches, 'layers': layers, 'is_referee': is_referee})

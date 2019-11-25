@@ -38,20 +38,20 @@
                     <li class="nav-item">
                         <a class="nav-link x-size" href="{% url 'users:all' %}">Users</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle x-size" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Profile
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle x-size" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Profile
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item x-size" href="{% url 'teams:your_teams' %}">Your teams</a>
                                 <a class="dropdown-item x-size" href="{% url 'tournaments:your_tournaments' %}">Your
                                     tournaments</a>
                                 <a class="dropdown-item x-size" href="{% url 'forms:profile' %}">Profile</a>
-                            {% endif %}
-                        </div>
-                    </li>
+                            </div>
+                        </li>
+                    {% endif %}
                     {% if request.user.is_superuser %}
                         <li class="nav-item">
                             <a class="nav-link x-size" href="/admin">Administration</a>
