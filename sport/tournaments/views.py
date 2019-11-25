@@ -9,8 +9,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core.paginator import Paginator
-
-from func.func import compare
 from forms.forms import AddTeamForm
 from forms.forms import AddSponsorForm
 

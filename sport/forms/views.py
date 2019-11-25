@@ -11,7 +11,6 @@ from tournaments.models import Tournament
 from sponsors.models import Sponsor
 from matches.models import Match
 from .models import SignUpForm
-from func.func import compare
 from django.forms.models import model_to_dict
 from tournaments.views import single, start_tournament
 

@@ -27,7 +27,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost','127.0.0.1','iistournaments.herokuapp.com','pacific-oasis-90795.herokuapp.com']
 
 INSTALLED_APPS = [
-    'func.apps.FuncConfig',
     'forms.apps.FormsConfig',
     'users.apps.UsersConfig',
     'matches.apps.MatchesConfig',
