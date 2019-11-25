@@ -5,7 +5,7 @@
 {% block header %}Add sponsor{% endblock %}
 
 {% block content %}
-  <form method="post" action = "{% url 'forms:create_sponsor' %}">
+  <form method="post" enctype="multipart/form-data" action = "{% url 'forms:create_sponsor' %}">
     {% csrf_token %}
     {{edit.as_p}}
     <button class="btn btn-primary" type="submit">Save changes</button>

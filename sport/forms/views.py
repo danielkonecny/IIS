@@ -263,7 +263,7 @@ def create_team(request):
 # vytvor sponsora. Tym upravit nejde, potreba ho smazat a zalozit dalsi.
 def create_sponsor(request):
     if request.method == 'POST':
-        form = CreateSponsor(request.POST)
+        form = CreateSponsor(request.POST, request.FILES)
         if form.is_valid():
             new = form.save(commit=False)
             # new.managers = request.user
