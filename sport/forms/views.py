@@ -16,6 +16,16 @@ from tournaments.views import single, start_tournament
 
 from .forms import AddTeamForm, TournamentForm, CreateTournament, CreateTeam, CreateSponsor, AddMatchResultsForm
 
+# funkce k zjisteni, jestli se tym vyskytuje v nejakym aktivnich turnajich
+def compare(l1,l2):
+    s1 = set(l1)
+    s2 = set(l2)
+
+    if (s1 & s2):
+        return True
+    else:
+        return False
+
 
 def signup(request):
     if request.method == 'POST':
