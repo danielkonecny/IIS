@@ -53,27 +53,6 @@ def single(request, id):
                             if ref == p:
                                 available_teams = available_teams.exclude(id=t.id)
 
-        # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
-        if request.method == 'POST':
-            add_new_team = AddTeamForm(request.POST, t=available_teams)
-            if add_new_team.is_valid():
-                team = add_new_team.cleaned_data['teams']
-                if team.managers == user and tournament.poradatele == user:
-                    tournament.teams.add(team)
-                else:
-                    tournament.requests_teams.add(team)
-
-                return single(request, id)
-
-        # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
-        if request.method == 'POST':
-            add_new_sponsor = AddSponsorForm(request.POST, s=available_sponsors)
-            if add_new_sponsor.is_valid():
-                sponsors = add_new_sponsor.cleaned_data['sponsors']
-                tournament.sponsors.add(sponsors)
-
-                return single(request, id)
-
         if available_teams:
             if len(available_teams):
                 add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
@@ -97,6 +76,52 @@ def single(request, id):
         s2 = set(teams)
         if (s1 & s2):
             permitted = False
+
+        tournament_started = tournament.started
+
+        # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
+        if request.method == 'POST':
+            add_new_team = AddTeamForm(request.POST, t=available_teams)
+            if add_new_team.is_valid():
+                team = add_new_team.cleaned_data['teams']
+                if team.managers == user and tournament.poradatele == user:
+                    tournament.teams.add(team)
+                else:
+                    tournament.requests_teams.add(team)
+
+                teams = tournament.teams.all()
+                rozhodci = tournament.rozhodci.all()
+                sponsors = tournament.sponsors.all()
+
+                # return single(request, id)
+                return render(request, 'tournaments/single.html',
+                              {'tournament': tournament, 'teams': teams, 'sponsors': sponsors,
+                               'rozhodci': rozhodci, 'permitted': permitted,
+                               'permitted_add_team': permitted_add_team,
+                               'permitted_add_sponsor': permitted_add_sponsor,
+                               'add_new_team': add_new_team,
+                               'add_new_sponsor': add_new_sponsor,
+                               'tournament_started': tournament_started})
+
+        # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
+        if request.method == 'POST':
+            add_new_sponsor = AddSponsorForm(request.POST, s=available_sponsors)
+            if add_new_sponsor.is_valid():
+                sponsors = add_new_sponsor.cleaned_data['sponsors']
+                tournament.sponsors.add(sponsors)
+
+                teams = tournament.teams.all()
+                rozhodci = tournament.rozhodci.all()
+                sponsors = tournament.sponsors.all()
+
+                return render(request, 'tournaments/single.html',
+                              {'tournament': tournament, 'teams': teams, 'sponsors': sponsors,
+                               'rozhodci': rozhodci, 'permitted': permitted,
+                               'permitted_add_team': permitted_add_team,
+                               'permitted_add_sponsor': permitted_add_sponsor,
+                               'add_new_team': add_new_team,
+                               'add_new_sponsor': add_new_sponsor,
+                               'tournament_started': tournament_started})
 
     tournament_started = tournament.started
 
