@@ -27,72 +27,76 @@ def single(request, id):
 
     add_new_team = None  # formular na pridani tymu do turnaje
     add_new_sponsor = None  # formular na pridani tymu do turnaje
-
-    # vyber vsechny tymy ktere user managuje
-    managing_teams = Team.objects.filter(managers=request.user)
-    user = request.user
-    available_teams = None
+    permitted = False
     permitted_add_team = False
     permitted_add_sponsor = False
-    if not tournament.started:
-        available_teams = managing_teams.exclude(tour_teams__in=[tournament])
-        available_teams = available_teams.exclude(tour_requests_teams__in=[tournament])
-        available_teams = available_teams.filter(singleplayerteam=tournament.singleplayer)
 
-    tournament_referees = tournament.rozhodci.all()
-    all_teams = Team.objects.all()
-    if tournament_referees:
-        for ref in tournament_referees:
-            if available_teams:
-                for t in available_teams:
-                    for p in t.players.all():
-                        if ref == p:
-                            available_teams = available_teams.exclude(id=t.id)
+    # vyber vsechny tymy ktere user managuje
+    if request.user.is_authenticated:
+        managing_teams = Team.objects.filter(managers=request.user)
+        user = request.user
+        available_teams = None
+        permitted_add_team = False
+        permitted_add_sponsor = False
+        if not tournament.started:
+            available_teams = managing_teams.exclude(tour_teams__in=[tournament])
+            available_teams = available_teams.exclude(tour_requests_teams__in=[tournament])
+            available_teams = available_teams.filter(singleplayerteam=tournament.singleplayer)
 
-    # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
-    if request.method == 'POST':
-        add_new_team = AddTeamForm(request.POST, t=available_teams)
-        if add_new_team.is_valid():
-            team = add_new_team.cleaned_data['teams']
-            if team.managers == user and tournament.poradatele == user:
-                tournament.teams.add(team)
-            else:
-                tournament.requests_teams.add(team)
+        tournament_referees = tournament.rozhodci.all()
+        all_teams = Team.objects.all()
+        if tournament_referees:
+            for ref in tournament_referees:
+                if available_teams:
+                    for t in available_teams:
+                        for p in t.players.all():
+                            if ref == p:
+                                available_teams = available_teams.exclude(id=t.id)
 
-            return single(request, id)
+        # ZACINA VALIDACE FORMULARE NA PRIDANI TYMU DO TURNAJE
+        if request.method == 'POST':
+            add_new_team = AddTeamForm(request.POST, t=available_teams)
+            if add_new_team.is_valid():
+                team = add_new_team.cleaned_data['teams']
+                if team.managers == user and tournament.poradatele == user:
+                    tournament.teams.add(team)
+                else:
+                    tournament.requests_teams.add(team)
 
-    # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
-    if request.method == 'POST':
-        add_new_sponsor = AddSponsorForm(request.POST, s=available_sponsors)
-        if add_new_sponsor.is_valid():
-            sponsors = add_new_sponsor.cleaned_data['sponsors']
-            tournament.sponsors.add(sponsors)
+                return single(request, id)
 
-            return single(request, id)
+        # ZACINA VALIDACE FORMULARE NA PRIDANI SPONSORA DO TURNAJE
+        if request.method == 'POST':
+            add_new_sponsor = AddSponsorForm(request.POST, s=available_sponsors)
+            if add_new_sponsor.is_valid():
+                sponsors = add_new_sponsor.cleaned_data['sponsors']
+                tournament.sponsors.add(sponsors)
 
-    if available_teams:
-        if len(available_teams):
-            add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
-            permitted_add_team = True
+                return single(request, id)
 
-    if available_sponsors:
-        if len(available_sponsors):
-            add_new_sponsor = AddSponsorForm(
-                s=available_sponsors)  # vytvor formular na pridani tymu do turnaje, az tedka
-            if user == tournament.poradatele:
-                permitted_add_sponsor = True
-            else:
-                permitted_add_sponsor = False
+        if available_teams:
+            if len(available_teams):
+                add_new_team = AddTeamForm(t=available_teams)  # vytvor formular na pridani tymu do turnaje, az tedka
+                permitted_add_team = True
 
-    # vyber vsechny tymy, ve kterych je aktualni user
-    his_teams = Team.objects.filter(players__in=[request.user])
+        if available_sponsors:
+            if len(available_sponsors):
+                add_new_sponsor = AddSponsorForm(
+                    s=available_sponsors)  # vytvor formular na pridani tymu do turnaje, az tedka
+                if user == tournament.poradatele:
+                    permitted_add_sponsor = True
+                else:
+                    permitted_add_sponsor = False
 
-    # zjisti jestli muze byt rozhodcim
-    permitted = True
-    s1 = set(his_teams)
-    s2 = set(teams)
-    if (s1 & s2):
-        permitted = False
+        # vyber vsechny tymy, ve kterych je aktualni user
+        his_teams = Team.objects.filter(players__in=[request.user])
+
+        # zjisti jestli muze byt rozhodcim
+        permitted = True
+        s1 = set(his_teams)
+        s2 = set(teams)
+        if (s1 & s2):
+            permitted = False
 
     tournament_started = tournament.started
 
